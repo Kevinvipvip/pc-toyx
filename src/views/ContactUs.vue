@@ -1,16 +1,13 @@
 <template>
-  <div class="about page">
+  <div class="contact page">
     <div class="banner">
-      <h3>关于我们</h3>
-      <p>27年毛绒玩具生产经验  朝气蓬勃的员工队伍  精准实现客户需求</p>
+      <h3>联系我们</h3>
+      <p>让信息互通 人际更简单 合作更便捷 联系零距离</p>
     </div>
     <div :style="index ===0?'display:block':'display:none'">0000</div>
     <div :style="index ===1?'display:block':'display:none'">1111</div>
     <div :style="index ===2?'display:block':'display:none'">2222</div>
     <div :style="index ===3?'display:block':'display:none'">3333</div>
-    <div :style="index ===4?'display:block':'display:none'">4444</div>
-    <div :style="index ===5?'display:block':'display:none'">5555</div>
-    <div :style="index ===6?'display:block':'display:none'">6666</div>
   </div>
 </template>
 
@@ -21,13 +18,13 @@
     },
     beforeRouteUpdate(to) {
       // console.log(to);
-      this.index = parseInt(to.query.on);
+      this.index = parseInt(to.query.index);
     },
     mounted() {
-      this.index = parseInt(this.$route.query.on);
+      this.index = parseInt(this.$route.query.index);
     },
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" rel="stylesheet/scss">
 </style>

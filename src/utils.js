@@ -64,14 +64,22 @@ const ajax = (vue, url, data, handle_code_list = []) => {
           }
         }
       }
+    }).catch(() => {
+      vue.$toast('网络超时')
     })
-      .catch(() => {
-        vue.$toast('网络超时')
-      })
   })
 };
 
+const show_banner_data = (vue) => {//作废
+  let id = vue.$route.query.id, arr_nav = config.nav, obj;
+  for (let i = 0; i < arr_nav.length; i++) {
+    if (arr_nav[i].id === id) {
+      obj = arr_nav[i];
+    }
+  }
+  return obj;
+};
 
 export default {
-  date_format, ajax
+  date_format, ajax, show_banner_data
 }
