@@ -11,6 +11,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(ElementUI);
 
+// 引入animate.css动画
+import animated from 'animate.css'
+// 使用animate.css动画
+Vue.use(animated);
 
 // 引入公共js文件
 import config from './config'

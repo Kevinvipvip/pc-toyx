@@ -22,6 +22,10 @@ const routes = [
     name: 'news',
     component: () => import('../views/News.vue')//新闻资讯页
   }, {
+    path: '/newDetail',
+    name: 'newDetail',
+    component: () => import('../views/NewsDetail.vue')//新闻详情页
+  }, {
     path: '/contact',
     name: 'contact',
     component: () => import('../views/ContactUs.vue')//联系我们页

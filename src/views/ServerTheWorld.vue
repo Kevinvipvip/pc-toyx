@@ -38,7 +38,7 @@
 
       </ul>
 
-      <div class="page-box" v-if="product_list.length === 16">
+      <div class="page-box" v-if="product_list.length > 16">
         <el-pagination
                 background
                 layout="prev, pager, next"

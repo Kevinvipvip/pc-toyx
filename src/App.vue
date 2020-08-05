@@ -35,10 +35,17 @@
 
   .page {
     min-height: calc(100vh - 100px - 425px);
+    position: relative;
+    z-index: 1;
   }
 
   .w-1200 {
     width: 1200px;
+    margin: 0 auto;
+  }
+
+  .w-1500 {
+    width: 1500px;
     margin: 0 auto;
   }
 

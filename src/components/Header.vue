@@ -71,6 +71,8 @@
 <style scoped lang="scss">
   .header {
     height: 100px;
+    position: relative;
+    z-index: 999;
 
     .header-box {
       width: 1200px;
