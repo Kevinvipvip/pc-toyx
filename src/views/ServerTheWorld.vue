@@ -1,6 +1,6 @@
 <template>
   <div class="server-world page">
-    <div class="banner">
+    <div class="banner" :style="'background-image: url('+banner+')'">
       <h3>服务全球</h3>
       <p>27年毛绒玩具生产经验 朝气蓬勃的员工队伍 精准实现客户需求</p>
     </div>
@@ -9,11 +9,14 @@
     <div class="crumb-tab">
       <div class="w-1200">
         <div class="crumb">
-          <p>首页>服务全球>{{page}}</p>
+          <p>
+            <router-link to="/"> 首页</router-link>
+            >服务全球>{{now_page_text}}
+          </p>
         </div>
         <div class="tab">
-          <p :class="index === 1?'on':''" @click="tab(1)">国内产品</p>
-          <p :class="index === 2?'on':''" @click="tab(2)">国外产品</p>
+          <p :class="internal === 1?'on':''" @click="tab(1)">国内产品</p>
+          <p :class="internal === 2?'on':''" @click="tab(2)">国外产品</p>
         </div>
       </div>
     </div>
@@ -21,27 +24,31 @@
     <!--分类-->
     <div class="cate-box w-1200">
       <ul>
-        <li :class="cate_on===-1?'on':''" @click="change_cate(-1)">全部产品</li>
-        <li :class="cate_on===item.id?'on':''" v-for="item in cate_list" :key="item.id" @click="change_cate(item.id)">
-          {{item.title}}
+        <li :class="cate_id===0?'on':''" @click="change_cate()">全部产品</li>
+        <li :class="cate_id===item.id?'on':''" v-for="item in cate_list" :key="item.id" @click="change_cate(item.id)">
+          {{item.cate_name}}
         </li>
       </ul>
     </div>
 
     <!--产品列表-->
-    <div class="product-list w-1200">
+    <div class="product-list w-1200" v-loading="loading">
       <ul>
-        <li v-for="item in product_list" :key="item.id">
+        <router-link :to="{name:'productDetail',query:{nav:2,internal:internal,id:item.id}}" tag="li"
+                     v-for="item in product_list"
+                     :key="item.id">
+
           <div class="pic-box" :style="'background-image:url('+item.pic+')'"></div>
-          <p class="one-line-ellipsis">{{item.title}}</p>
-        </li>
+          <p class="one-line-ellipsis">{{item.name}}</p>
+        </router-link>
 
       </ul>
 
-      <div class="page-box" v-if="product_list.length > 16">
+      <div class="page-box" v-if="product_list.length>16">
         <el-pagination
                 background
                 layout="prev, pager, next"
+                @current-change="current_change"
                 :total="100">
         </el-pagination>
       </div>
@@ -53,49 +60,91 @@
   export default {
     data() {
       return {
-        index: 0,
-        page: '',
+        banner: this.config.banner,
+        internal: 0,
+        now_page_text: '',
+        page: 1,
+        total: 0,
 
-        cate_on: -1,//选择分类的活动项
-        cate_list: [{ id: 1, title: '自主IP' }, { id: 2, title: '授权产品' }, { id: 3, title: '抓机系列' }],// 分类
+        cate_id: 0,//选择分类的活动项
+        cate_list: [],// 分类
 
-        product_list: [{
-          id: 1,
-          title: '哈属性词UN比偶农村你把撒大声地',
-          pic: 'http://static.wcip.net/images/img1.jpg'
-        }, {
-          id: 2,
-          title: '哈属性词UN比偶农村你把',
-          pic: 'http://static.wcip.net/images/img2.jpg'
-        }],//产品列表数据
+        product_list: [],//产品列表数据
+
+        loading: true
       };
     },
     beforeRouteUpdate(to) {
-      this.index = parseInt(to.query.on);
-      this.my_load(this.index);
+      this.internal = parseInt(to.query.on);
+      if (to.query.cate) {
+        this.cate_id = parseInt(to.query.cate);
+      }
+      this.my_load(this.internal);
     },
     mounted() {
-      this.index = parseInt(this.$route.query.on);
-      this.my_load(this.index);
+      this.internal = parseInt(this.$route.query.on);
+      if (this.$route.query.cate) {
+        this.cate_id = parseInt(this.$route.query.cate);
+      }
+      this.my_load(this.internal);
+
+      // this.my_onload();
     },
     methods: {
       tab(on) {
-        this.index = on;
+        this.internal = on;
         this.my_load(on);
       },
 
       change_cate(cate_id) {
-        this.cate_on = cate_id;
+        let cate = cate_id || 0;
+        this.cate_id = cate;
+        this.getProductList();
       },
+
+      current_change(current) {
+        this.page = current;
+        this.getProductList();
+      },
+
       my_load(index) {
         switch (index) {
           case 1:
-            this.page = '国内产品';
+            this.now_page_text = '国内产品';
+            this.page = 1;
+            this.cate_list = [];
+            this.cate_id = 0;
+            this.getCateList();
+            this.getProductList();
             break;
           case 2:
-            this.page = '国外产品';
+            this.now_page_text = '国外产品';
+            this.page = 1;
+            this.cate_list = [];
+            this.cate_id = 0;
+            this.getProductList();
             break;
         }
+      },
+      getCateList() {
+        this.utils.ajax(this, 'zh.index/cateList').then(res => {
+          this.cate_list = res;
+        })
+      },
+      getProductList() {
+        let post = {
+          page: this.page,
+          perpage: 16,
+          cate_id: this.cate_id,
+          internal: this.internal
+        };
+        this.loading = true;
+        this.utils.ajax(this, 'zh.index/productList', post).then(res => {
+          this.utils.aliyun_format(res.list, 'pic');
+          this.product_list = res.list;
+          this.total = res.count;
+          this.loading = false;
+        })
       }
     }
   };
@@ -120,6 +169,15 @@
         align-items: center;
         color: #666666;
         font-size: 16px;
+
+        a {
+          color: #666666;
+          font-size: 16px;
+
+          &:hover {
+            color: #50a8ec;
+          }
+        }
       }
 
       .tab {
@@ -190,6 +248,7 @@
         flex-wrap: wrap;
 
         li {
+          cursor: pointer;
           width: 260px;
           margin-right: 53px;
           margin-top: 30px;

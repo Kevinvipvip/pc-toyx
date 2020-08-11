@@ -20,7 +20,7 @@
           <p><span class="text-language">{{language}}</span><span><i :class="click_flag?'active':''"></i></span></p>
           <div class="lang-box" :class="click_flag?'active':''">
             <span @click="change_language('中文')">中文</span>
-            <span @click="change_language('en')">en</span>
+            <span @click="change_language('EN')">EN</span>
           </div>
         </div>
       </div>

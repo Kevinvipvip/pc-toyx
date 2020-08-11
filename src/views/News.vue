@@ -1,6 +1,6 @@
 <template>
   <div class="news page">
-    <div class="banner">
+    <div class="banner" :style="'background-image: url('+banner+')'">
       <h3>新闻资讯</h3>
       <p>公司最新 行业最热 抓住行业新动态 驱动企业快速发展</p>
     </div>
@@ -56,6 +56,7 @@
   export default {
     data() {
       return {
+        banner:this.config.banner,
         index: 1,
 
         // 新闻列表

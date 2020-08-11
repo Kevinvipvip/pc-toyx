@@ -26,6 +26,10 @@ const routes = [
     name: 'newDetail',
     component: () => import('../views/NewsDetail.vue')//新闻详情页
   }, {
+    path: '/productDetail',
+    name: 'productDetail',
+    component: () => import('../views/ProductDetail.vue')//产品详情页
+  }, {
     path: '/contact',
     name: 'contact',
     component: () => import('../views/ContactUs.vue')//联系我们页
@@ -37,7 +41,14 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  }
 });
 
 export default router;

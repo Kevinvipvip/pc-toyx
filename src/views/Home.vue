@@ -4,22 +4,23 @@
       <swiper v-if="slide_list.length>0" :options="swiperOption" class="swiper-wrap" ref="mySwiper">
         <swiper-slide class="swiper-item" v-for="(v,index) in slide_list" :key="index">
           <div class="swiper-img" :style="'background-image: url('+v.pic+')'">
-            <div class="swiper-title">
+            <div class="swiper-title"
+                 :style="'background: url('+swiper_mask+') no-repeat;'">
               <div class="t-title animated" :class="{fadeInDownBig:index == isActive}">
                 <h4>{{v.en_title}}</h4>
                 <h3>{{v.title}}</h3>
-                <p>了解详情>></p></div>
+                <p @click="to_slide_detail(v.url)">了解详情>></p></div>
             </div>
           </div>
         </swiper-slide>
       </swiper>
     </div>
 
-    <div class="content">
+    <div class="content" :style="'background-image: url('+index_bg+')'">
       <!--关于我们-->
       <div class="home-mask">
         <div class="rank">
-          <div class="ice-cake"></div>
+          <div class="ice-cake" :style="'background-image: url('+ice_cake_left+')'"></div>
           <div class="img-box"><img :src="about_flag?about_img[0]:about_img[1]"/></div>
         </div>
         <div class="rank2 w-1200">
@@ -27,7 +28,7 @@
           <h4>关于同缘兴</h4>
           <p>
             天津同缘兴科技股份有限公司成立于1993年，专注于毛绒玩具创意设计与研发制造，服务北美、欧洲、澳洲客户20余年，拥有强大的产品研发能力，完整的生产加工体系和严格的产品质量控制体系。同缘兴拥有“独角兽”和“亲亲一家”两个自主品牌，致力于打造全年龄段的服务产品，成为您追求美好生活路上的忠诚伴侣。我们的愿景：让美好融入生活，让生活更美好。</p>
-          <router-link class="btn-more" :to="{path:'/about',query:{index:1}}">Read More</router-link>
+          <router-link class="btn-more" :to="{path:'/about',query:{nav:3,on:1}}">Read More</router-link>
         </div>
       </div>
 
@@ -35,33 +36,18 @@
       <div class="home-mask m1">
         <div class="classify">
           <swiper v-if="cate_list.length>0" :options="classify" class="swiper-classify" ref="classify">
-            <swiper-slide class="classify-item" v-if="cate_list.length%2 !== 0" :key="9999999">
-              <div class="item-img-bg">
+            <swiper-slide class="classify-item" v-if="cate_list.length%2 !== 0" :key="9999999" style="cursor: auto">
+              <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
               </div>
             </swiper-slide>
-            <swiper-slide class="classify-item" v-for="(item,index) in cate_list" :key="index">
-              <div class="item-img-bg">
-                <div class="item-img"><img :src="item.pic"/></div>
+            <swiper-slide class="classify-item" v-for="(item,index) in cate_list" :key="index" :id="item.id">
+              <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
+                <div class="item-img"><img :src="item.icon2"/></div>
               </div>
-              <h3>{{item.name}}</h3>
+              <h3>{{item.cate_name}}</h3>
             </swiper-slide>
           </swiper>
-          <!--<ul>-->
-          <!--<li v-for="(item,index) in cate_list" :key="index">-->
-          <!--<div class="item-img-bg">-->
-          <!--<div class="item-img"><img :src="item.pic"/></div>-->
-          <!--</div>-->
-          <!--<h3>{{item.name}}</h3>-->
-          <!--</li>-->
-          <!--&lt;!&ndash;<li v-for="(item,index) in cate_list" :key="index">&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="item-img-bg">&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="item-img"><img :src="item.pic"/></div>&ndash;&gt;-->
-          <!--&lt;!&ndash;</div>&ndash;&gt;-->
-          <!--&lt;!&ndash;<h3>{{item.name}}</h3>&ndash;&gt;-->
-          <!--&lt;!&ndash;</li>&ndash;&gt;-->
-          <!--<div style="clear: both"></div>-->
-          <!--</ul>-->
-          <div class="home-cate-box"><img src="../assets/home-cate.png"/></div>
+          <div class="home-cate-box"><img :src="home_cate"/></div>
         </div>
 
       </div>
@@ -69,7 +55,7 @@
       <div class="home-mask m2">
         <div class="rank">
           <div class="img-box"><img :src="R_D_flag?R_D_img[0]:R_D_img[1]"/></div>
-          <div class="ice-cake"></div>
+          <div class="ice-cake" :style="'background-image: url('+ice_cake_right+')'"></div>
         </div>
         <div class="rank2 w-1200">
           <h4>R&D</h4>
@@ -82,7 +68,7 @@
       <!--孵化中心-->
       <div class="home-mask m3">
         <div class="rank">
-          <div class="ice-cake"></div>
+          <div class="ice-cake" :style="'background-image: url('+ice_cake_left+')'"></div>
           <div class="img-box"><img :src="incubation_flag?incubation_img[0]:incubation_img[1]"/></div>
         </div>
         <div class="rank2 w-1200">
@@ -96,7 +82,7 @@
       <div class="home-mask m4">
         <div class="rank">
           <div class="img-box"><img :src="service_flag?service_img[0]:service_img[1]"/></div>
-          <div class="ice-cake"></div>
+          <div class="ice-cake" :style="'background-image: url('+ice_cake_right+')'"></div>
         </div>
         <div class="rank2 w-1200">
           <h4>SERVICE</h4>
@@ -109,7 +95,7 @@
       <!--合作伙伴-->
       <div class="home-mask m5">
         <div class="rank">
-          <div class="ice-cake"></div>
+          <div class="ice-cake" :style="'background-image: url('+ice_cake_left+')'"></div>
           <div class="img-box"><img :src="partner_flag?partner_img[0]:partner_img[1]"/></div>
         </div>
         <div class="rank2 w-1200">
@@ -130,17 +116,6 @@
   import 'swiper/dist/css/swiper.css'// 这里注意具体看使用的版本是否需要引入样式，以及具体位置。
   import { swiper, swiperSlide } from 'vue-awesome-swiper' // 引入slider组件
 
-  import about_img1 from '../assets/home-about1.png'
-  import about_img2 from '../assets/home-about2.png'
-  import R_D1 from '../assets/home-R&D1.png'
-  import R_D2 from '../assets/home-R&D2.png'
-  import incubation1 from '../assets/home-incubation1.png'
-  import incubation2 from '../assets/home-incubation2.png'
-  import service1 from '../assets/home-service1.png'
-  import service2 from '../assets/home-service2.png'
-  import partner1 from '../assets/home-partner1.png'
-  import partner2 from '../assets/home-partner2.png'
-
   var _self;
 
   export default {
@@ -151,38 +126,30 @@
     },
     data() {
       return {
+        swiper_mask: this.config.aliyun + 'static/swiper-mask.png',// 轮播图遮罩图片
+        index_bg: this.config.aliyun + 'static/index-bg.jpg',// 整个页面背景图
+        ice_cake_left: this.config.aliyun + 'static/ice-cake-left.png',// 左边大冰块
+        ice_cake_right: this.config.aliyun + 'static/ice-cake-right.png',// 右边大冰块
+        ice_cake_small: this.config.aliyun + 'static/ice-cake-small.png',// 分类小冰块
+        home_cate: this.config.aliyun + 'static/home-cate.png',// 分类小冰块
+
         // 插画图片 start
         about_flag: true,
-        about_img: [about_img1, about_img2],
+        about_img: [this.config.aliyun + 'static/home-about1.png', this.config.aliyun + 'static/home-about2.png'],
         R_D_flag: true,
-        R_D_img: [R_D1, R_D2],
+        R_D_img: [this.config.aliyun + 'static/home-R&D1.png', this.config.aliyun + 'static/home-R&D2.png'],
         incubation_flag: true,
-        incubation_img: [incubation1, incubation2],
+        incubation_img: [this.config.aliyun + 'static/home-incubation1.png', this.config.aliyun + 'static/home-incubation2.png'],
         service_flag: true,
-        service_img: [service1, service2],
+        service_img: [this.config.aliyun + 'static/home-service1.png', this.config.aliyun + 'static/home-service2.png'],
         partner_flag: true,
-        partner_img: [partner1, partner2],
+        partner_img: [this.config.aliyun + 'static/home-partner1.png', this.config.aliyun + 'static/home-partner2.png'],
         // 插画图片 end
 
-        cate_list: [
-          { pic: 'http://static.wcip.net/images/header1.jpg', name: '自主IP' },
-          { pic: 'http://static.wcip.net/images/header2.jpg', name: '国际市场' },
-          { pic: 'http://static.wcip.net/images/header1.jpg', name: '抱枕系列' },
-          { pic: 'http://static.wcip.net/images/header2.jpg', name: '母婴系列' },
-          { pic: 'http://static.wcip.net/images/header1.jpg', name: '抓机系列' }
-        ].reverse(),//分类列表
+        cate_list: [],//分类列表
         // 轮播图
         isActive: 0,
-        slide_list: [
-          {
-            pic: 'http://static.wcip.net/images/img1.jpg',
-            en_title: 'Lucky  world    The world of lucky',
-            title: '同缘兴的世界 世界的同缘兴'
-          }, {
-            pic: 'http://static.wcip.net/images/img2.jpg',
-            en_title: 'Lucky  world    The world of lucky',
-            title: '同缘兴的世界 世界的同缘兴'
-          }],
+        slide_list: [],
         swiperOption: {
           // loop: true,
           autoplay: {
@@ -193,57 +160,129 @@
           speed: 800,
           direction: 'horizontal',
           on: {
-            //   tap() {
-            //     let id = news_arr[this.realIndex].id;
-            //     console.log(id);
-            //     vm.$router.push({
-            //       name: 'newdetail',
-            //       query: {
-            //         // nav: 4,
-            //         id: id,
-            //         url: '/',
-            //         name: '首页'
-            //       }
-            //     })
-            //   }
+            // tap(e) {
+            //   // let id = news_arr[this.realIndex].id;
+            //   console.log(e);
+            //   // _self.$router.push({
+            //   //   name: 'newdetail',
+            //   //   query: {
+            //   //     // nav: 4,
+            //   //     id: id,
+            //   //     url: '/',
+            //   //     name: '首页'
+            //   //   }
+            //   // })
+            // },
             slideChange() {
-              // console.log(this);
               _self.isActive = this.activeIndex;
+              // console.log(_self.isActive);
               // console.log('改变了，activeIndex为' + this.activeIndex)
             }
           }
         },
         classify: {
           slidesPerView: 'auto',
-          initialSlide: 0
+          initialSlide: 0,
+          on: {
+            tap() {
+              if (this.clickedSlide) {
+                let cate_id = this.clickedSlide.getAttribute('id');
+                if (cate_id) {
+                  _self.$router.push({
+                    path: '/server',
+                    query: { nav: 2, on: 1, cate: cate_id }
+                  })
+                  ;
+                  console.log(cate_id);
+                }
+              }
+            }
+          }
         }
       }
     },
     created() {
       _self = this;
-      this.classify.initialSlide = this.cate_list.length;
       setInterval(() => {
         this.about_flag = !this.about_flag;
         this.R_D_flag = !this.R_D_flag;
         this.incubation_flag = !this.incubation_flag;
         this.service_flag = !this.service_flag;
         this.partner_flag = !this.partner_flag;
-      }, 1000);
+      }, 800);
+      let promise1 = new Promise(resolve => {
+        this.getSlideList(() => {
+          resolve();
+        });
+      });
+      let promise2 = new Promise(resolve => {
+        this.getCateList(() => {
+          this.classify.initialSlide = this.cate_list.length;
+          resolve();
+        });
+      });
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      Promise.all([promise1, promise2]).then(() => {
+        loading.close();
+      })
     },
     methods: {
-      interval_change_img(flag) {
-        setInterval(() => {
-          _self.about_flag = !flag;
-          // if (flag) {
-          console.log(flag);
-          //   this[obj] = obj + '1';
-          //   flag = !flag;
-          // } else {
-          //   console.log(flag);
-          //   this[obj] = obj + '2';
-          //   flag = !flag
-          // }
-        }, 1000);
+      // 点击轮播图进详情
+      to_slide_detail(url) {
+        if (url) {
+          if (url.indexOf('http') === 0) {
+            window.open(url, "_blank");
+          } else {
+            let page = url.split('?');
+            let query = page[1].split('=');
+            switch (page[0]) {
+              case 'newDetail':
+                this.$router.push({
+                  path: page[0],
+                  query: {
+                    nav: 4,
+                    id: query[1]
+                  }
+                });
+                break;
+              case 'productDetail':
+                this.$router.push({
+                  path: page[0],
+                  query: {
+                    nav: 2,
+                    id: query[1]
+                  }
+                })
+                ;
+                break;
+            }
+          }
+        }
+      },
+      // 获取分类列表
+      getCateList(complete) {
+        this.utils.ajax(this, 'zh.index/cateList').then(res => {
+          this.utils.aliyun_format(res, 'icon2');
+          this.cate_list = res.reverse();
+          if (complete) {
+            complete();
+          }
+        })
+      },
+      // 获取轮播图列表
+      getSlideList(complete) {
+        this.utils.ajax(this, 'zh.index/slideList').then(res => {
+          this.utils.aliyun_format(res, 'pic');
+          this.slide_list = res;
+          if (complete) {
+            complete();
+          }
+        });
       }
     }
   }
@@ -264,7 +303,7 @@
           background-position: center;
 
           .swiper-title {
-            background: url('../assets/swiper-mask.png') no-repeat;
+
             height: 100%;
             width: 73%;
             background-position: left;
@@ -289,6 +328,7 @@
               }
 
               p {
+                cursor: pointer;
                 margin-top: 53px;
               }
             }
@@ -299,7 +339,8 @@
     }
 
     .content {
-      background: url("../assets/index-bg.png") bottom no-repeat;
+      background-repeat: no-repeat;
+      background-position: bottom;
       background-size: 100%;
 
       .home-mask {
@@ -324,7 +365,8 @@
             left: 100px;
             width: 1041px;
             height: 551px;
-            background: url("../assets/ice-cake-left.png") center no-repeat;
+            background-position: center;
+            background-repeat: no-repeat;
             background-size: 100%;
             z-index: 1;
           }
@@ -424,9 +466,11 @@
 
                 .classify-item {
                   /*float: right;*/
-                  margin-left: 34px;
+                  margin-left: 40px;
+                  cursor: pointer;
                   transform: translateY(289px);
                   width: 216px;
+                  height: 286px !important;
 
                   &:nth-child(even) {
                     transform: translateY(149px);
@@ -435,7 +479,8 @@
                   .item-img-bg {
                     width: 216px;
                     height: 253px;
-                    background: url("../assets/ice-cake-small.png") center no-repeat;
+                    background-repeat: no-repeat;
+                    background-position: center;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -460,6 +505,13 @@
                     text-align: center;
                   }
 
+                  &:hover {
+                    transform: translateY(149px);
+
+                    &:nth-child(even) {
+                      transform: translateY(289px);
+                    }
+                  }
                 }
               }
             }
@@ -519,7 +571,6 @@
             .ice-cake {
               left: unset;
               right: 100px;
-              background-image: url("../assets/ice-cake-right.png");
             }
 
             .img-box {
@@ -544,7 +595,6 @@
             .ice-cake {
               left: unset;
               right: 100px;
-              background-image: url("../assets/ice-cake-right.png");
             }
 
             .img-box {

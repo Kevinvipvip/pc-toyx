@@ -72,7 +72,8 @@
   /*banner样式*/
   .banner {
     height: 225px;
-    background: url("assets/banner.png") bottom no-repeat;
+    background-position: bottom;
+    background-repeat: no-repeat;
     background-size: 100%;
     background-color: #ffffff;
     display: flex;

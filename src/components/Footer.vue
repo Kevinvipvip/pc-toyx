@@ -2,46 +2,66 @@
   <div class="footer">
     <div class="w-1200">
       <div class="logo-address">
-        <div class="logo"><img src="../assets/logo-footer.png" alt=""></div>
+        <div class="logo">
+          <router-link to="/"><img src="../assets/logo-footer.png" alt=""></router-link>
+        </div>
         <div class="address">
-          <p><i class="i-address"></i><span>地 址：天津市蓟州区礼明庄镇孟家楼村</span></p>
-          <p><i class="i-email"></i><span>邮 箱：luckytoytj@vip.sina.com</span></p>
-          <p><i class="i_tel"></i><span>联系电话：022-2989-7418</span></p>
-          <p><i class="i-chuan"></i><span>传 真：022-2989-8486</span></p>
+          <p><i class="i-address"></i><span>地 址：{{footer.address}}</span></p>
+          <p><i class="i-email"></i><span>邮 箱：{{footer.email}}</span></p>
+          <p><i class="i_tel"></i><span>联系电话：{{footer.tel}}</span></p>
+          <p><i class="i-chuan"></i><span>传 真：{{footer.fax}}</span></p>
         </div>
       </div>
       <div class="q-nav">
         <ul>
           <li>关于我们</li>
-          <li>公司介绍</li>
-          <li>发展历程</li>
-          <li>企业文化</li>
-          <li>荣誉资质</li>
-          <li>企业团队</li>
-          <li>社会责任</li>
+          <router-link :to="{path:'/about',query:{nav:3,on:1}}" tag="li">公司介绍</router-link>
+          <router-link :to="{path:'/about',query:{nav:3,on:2}}" tag="li">发展历程</router-link>
+          <router-link :to="{path:'/about',query:{nav:3,on:3}}" tag="li">企业文化</router-link>
+          <router-link :to="{path:'/about',query:{nav:3,on:4}}" tag="li">荣誉资质</router-link>
+          <router-link :to="{path:'/about',query:{nav:3,on:5}}" tag="li">企业团队</router-link>
+          <router-link :to="{path:'/about',query:{nav:3,on:6}}" tag="li">社会责任</router-link>
         </ul>
         <ul>
           <li>服务全球</li>
-          <li>自主IP</li>
-          <li>授权产品</li>
-          <li>抓机系列</li>
-          <li>母婴系列</li>
-          <li>抱枕系列</li>
-          <li>国际市场</li>
+          <router-link :to="{path:'/server',query:{nav:2,on:1,cate:item.id}}" tag="li" v-for="(item,index) in cate_list"
+                       :key="index">{{item.cate_name}}
+          </router-link>
+          <!--<router-link :to="{path:'/server',query:{nav:2,on:1,cate:1}}" tag="li">授权产品</router-link>-->
+          <!--<router-link :to="{path:'/server',query:{nav:2,on:1,cate:1}}" tag="li">抓机系列</router-link>-->
+          <!--<router-link :to="{path:'/server',query:{nav:2,on:1,cate:1}}" tag="li">母婴系列</router-link>-->
+          <!--<router-link :to="{path:'/server',query:{nav:2,on:1,cate:1}}" tag="li">抱枕系列</router-link>-->
+          <!--<router-link :to="{path:'/server',query:{nav:2,on:1,cate:1}}" tag="li">国际市场</router-link>-->
         </ul>
         <ul>
           <li>快捷入口</li>
-          <li>联系我们</li>
-          <li>新闻资讯</li>
-          <li>人才招聘</li>
-          <li>留言中心</li>
+          <router-link :to="{path:'contact',query:{nav:5}}" tag="li">联系我们</router-link>
+          <router-link :to="{path:'news',query:{nav:4}}" tag="li">新闻资讯</router-link>
+          <router-link :to="{path:'contact',query:{nav:5,on:2}}" tag="li">人才招聘</router-link>
+          <router-link :to="{path:'contact',query:{nav:5}}" tag="li">留言中心</router-link>
         </ul>
         <ul>
           <li>关注我们</li>
-          <li>微信公众号</li>
-          <li>小程序</li>
-          <li>阿里商城</li>
-          <li>微博平台号</li>
+          <li class="have-code">
+            <el-tooltip placement="top">
+              <div slot="content" style="width: 100px;height: 100px;"><img src="../assets/wx-code.jpg"/></div>
+              <span>微信公众号</span>
+            </el-tooltip>
+          </li>
+          <li class="have-code">
+            <el-tooltip placement="top">
+              <div slot="content" style="width: 100px;height: 100px;"><img src="../assets/mp-code.jpg"/></div>
+              <span>小程序</span>
+            </el-tooltip>
+          </li>
+          <li>
+            <el-tooltip placement="top">
+              <div slot="content" style="width: 100px;height: 100px;"><img src="../assets/1688-code.png"/></div>
+              <a href="https://tongyuanxingtoy.1688.com?spm=a2615.2177701.autotrace-shopSigns.2.134e1001sVuPec"
+                 target="_blank">阿里商城</a>
+            </el-tooltip>
+          </li>
+          <!--<li>微博平台号</li>-->
         </ul>
       </div>
     </div>
@@ -49,7 +69,7 @@
       <div class="w-1200">
         <p>
           <span><a href="https://www.wcip.net" target="_blank">山海文化有限公司</a>提供技术支持</span>
-          <span>备案许可证号<a href="http://www.beian.miit.gov.cn/" target="_blank">豫ICP备19031536号-1</a></span>
+          <span>备案许可证号<a href="http://www.beian.miit.gov.cn/" target="_blank">津ICP备20006105号-1</a></span>
         </p>
         <p>
           <router-link to="/1">免责声明</router-link>
@@ -67,7 +87,26 @@
   export default {
     name: 'Footer',
     data() {
-      return {};
+      return {
+        footer: {
+          address: '',
+          email: '',
+          tel: '',
+          fax: ''
+        },
+        cate_list: []
+      };
+    },
+    created() {
+      this.utils.ajax(this, 'zh.index/aboutUs').then(res => {
+        this.footer.address = res.address;
+        this.footer.email = res.email;
+        this.footer.tel = res.tel;
+        this.footer.fax = res.fax;
+      });
+      this.utils.ajax(this, 'zh.index/cateList').then(res => {
+        this.cate_list = res;
+      })
     }
   };
 </script>
@@ -144,13 +183,23 @@
             margin-bottom: 10px;
             cursor: pointer;
 
+            a {
+              color: #cccccc;
+              font-size: 14px;
+            }
+
+            &.have-code {
+              cursor: auto;
+            }
+
             &:first-child {
               cursor: auto;
               font-size: 18px;
               margin-bottom: 25px;
               color: #eeeeee;
             }
-            &:hover{
+
+            &:hover {
               color: #50a8ec;
             }
           }
@@ -189,5 +238,12 @@
         }
       }
     }
+
+    /*/deep/ .el-tooltip__popper {*/
+    /*.code-img {*/
+    /*width: 100px;*/
+    /*height: 100px;*/
+    /*}*/
+    /*}*/
   }
 </style>
