@@ -8,7 +8,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home//首页
+    component: Home,//首页
+    meta: {
+      isHome: true
+    }
   }, {
     path: '/about',
     name: 'About',

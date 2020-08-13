@@ -1,13 +1,8 @@
 <template>
   <div id="app">
-    <!--<div id="nav">-->
-    <!--<router-link to="/">Home</router-link>-->
-    <!--|-->
-    <!--<router-link to="/about">About</router-link>-->
-    <!--</div>-->
     <Header/>
     <router-view/>
-    <Footer/>
+    <Footer :style="$route.meta.isHome?'min-width: 1400px':''"/>
   </div>
 </template>
 
@@ -34,6 +29,7 @@
   }
 
   .page {
+    min-width: 1200px;
     min-height: calc(100vh - 100px - 425px);
     position: relative;
     z-index: 1;

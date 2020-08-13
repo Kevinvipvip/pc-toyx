@@ -44,12 +44,12 @@
 
       </ul>
 
-      <div class="page-box" v-if="product_list.length>16">
+      <div class="page-box" v-if="total>16">
         <el-pagination
                 background
                 layout="prev, pager, next"
                 @current-change="current_change"
-                :total="100">
+                :total="total">
         </el-pagination>
       </div>
     </div>

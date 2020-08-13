@@ -49,16 +49,20 @@
       nav_click(id, url, index) {
         this.active = id;
         let query = {};
-        if (url !== this.$route.path || index !== parseInt(this.$route.query.on)) {
-          if (index) {
-            query.nav = id;
-            query.on = index;
-          } else {
-            query.nav = id;
-          }
-          this.$router.push({ path: url, query: query });
+        if (index) {
+          query.nav = id;
+          query.on = index;
         } else {
-          this.$router.push({ name: 'center', query: this.$route.query });
+          query.nav = id;
+        }
+        if (url === this.$route.path) {
+          if (index) {
+            if (index !== parseInt(this.$route.query.on)) {
+              this.$router.push({ name: 'center', query: query });
+            }
+          }
+        } else {
+          this.$router.push({ path: url, query: query });
         }
       },
       change_language(language) {
@@ -70,7 +74,8 @@
 
 <style scoped lang="scss">
   .header {
-    height: 100px;
+    min-width: 1200px;
+    height: 60px;
     position: relative;
     z-index: 999;
 
@@ -206,7 +211,7 @@
             .second-nav {
               padding-top: 40px;
               position: absolute;
-              top: 20px;
+              top: 0;
               left: 0;
               display: none;
               flex-flow: column;

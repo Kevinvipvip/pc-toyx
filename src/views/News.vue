@@ -7,45 +7,53 @@
     <!--tab-->
     <div class="tab-box">
       <div class="tab">
-        <p :class="index === 1?'on':''" @click="tab(1)">公司动态</p>
-        <p :class="index === 2?'on':''" @click="tab(2)">行业动态</p>
+        <p :class="type === 1?'on':''" @click="tab(1)">公司动态</p>
+        <p :class="type === 2?'on':''" @click="tab(2)">行业动态</p>
       </div>
     </div>
 
     <!--新闻列表-->
     <div class="news w-1200">
       <ul>
-        <li v-for="(item,index) in news_list" :key="index">
+        <li v-for="(item,index) in news_list" :key="index" @click="to_new_detail(item.id)">
           <div class="no-one" v-if="index>0">
-            <div class="img-box"><img :src="item.pic"/></div>
+            <div class="img-box" :style="'background-image: url('+item.pic+')'">
+              <!--<img :src="item.pic"/>-->
+            </div>
             <div class="new-cont">
               <h3 class="one-line-ellipsis">{{item.title}}</h3>
-              <p class="two-line-ellipsis">{{item.content}}</p>
-              <router-link :to="{path:'/newDetail',query:{id:item.id}}">Read More+</router-link>
+              <p class="two-line-ellipsis">{{item.desc}}</p>
+              <!--<router-link :to="{path:'/newDetail',query:{id:item.id,nav:4,type:type}}">Read More+</router-link>-->
+              <div class="btn-to-detail">Read More+</div>
             </div>
             <div class="new-date">
-              <span>{{parseInt(item.date.substr(8,2))}}</span>
-              <p>{{item.date.substr(0,7)}}</p>
+              <span>{{parseInt(item.create_time.substr(8,2))}}</span>
+              <p>{{item.create_time.substr(0,7)}}</p>
             </div>
           </div>
           <div class="list-one" v-else>
             <div class="one-cont">
-              <h3 class="one-line-ellipsis">{{item.title+item.title}}</h3>
-              <p class="two-line-ellipsis">{{item.content}}</p>
-              <span>{{item.date}}</span>
-              <router-link :to="{path:'/newDetail',query:{id:item.id}}">Read More+</router-link>
+              <h3 class="one-line-ellipsis">{{item.title}}</h3>
+              <p class="two-line-ellipsis">{{item.desc}}</p>
+              <span>{{item.create_time}}</span>
+              <!--<router-link :to="{path:'/newDetail',query:{id:item.id,nav:4,type:type}}">Read More+</router-link>-->
+              <div class="btn-to-detail">Read More+</div>
             </div>
-            <div class="img-box"><img :src="item.pic"/></div>
+            <div class="img-box" :style="'background-image: url('+item.pic+')'">
+              <!--<img :src="item.pic"/>-->
+            </div>
           </div>
         </li>
       </ul>
 
-      <!--<div class="page-box" v-if="news_list.length>10">-->
-      <div class="page-box">
+      <div class="page-box" v-if="total>5">
+        <!--<div class="page-box">-->
         <el-pagination
                 background
                 layout="prev, pager, next"
-                :total="100">
+                :page-size="5"
+                @current-change="current_change"
+                :total="total">
         </el-pagination>
       </div>
     </div>
@@ -56,49 +64,60 @@
   export default {
     data() {
       return {
-        banner:this.config.banner,
-        index: 1,
+        banner: this.config.banner,
+        type: 1,
+        page: 1,
+
+        total: 0,
 
         // 新闻列表
-        news_list: [
-          {
-            pic: 'http://static.wcip.net/images/img1.jpg',
-            title: '西安邮电大学与安康汉滨区深度合作，研发适合毛绒玩具全产业链实用技术',
-            content: '7月17日至18日，西安邮电大学研究生院院长巩红、西部数字经济研究院副院长张安带领相关人员，来\n' +
-              '安康市汉滨区调研毛绒玩具产业数、字化发展情况。汉滨区政协副主席、区互联网产业发展领导小组副\n' +
-              '组长马安武一同调研。',
-            date: '2020-10-20'
-          }, {
-            pic: 'http://static.wcip.net/images/img2.jpg',
-            title: '西安邮电大学与安康汉滨区深度合作，研发适合毛绒玩具全产业链实用技术',
-            content: '7月17日至18日，西安邮电大学研究生院院长巩红、西部数字经济研究院副院长张安带领相关人员，来\n' +
-              '安康市汉滨区调研毛绒玩具产业数、字化发展情况。汉滨区政协副主席、区互联网产业发展领导小组副\n' +
-              '组长马安武一同调研。',
-            date: '2020-09-16'
-          }, {
-            pic: 'http://static.wcip.net/images/img3.jpg',
-            title: '西安邮电大学与安康汉滨区深度合作，研发适合毛绒玩具全产业链实用技术',
-            content: '7月17日至18日，西安邮电大学研究生院院长巩红、西部数字经济研究院副院长张安带领相关人员，来\n' +
-              '安康市汉滨区调研毛绒玩具产业数、字化发展情况。汉滨区政协副主席、区互联网产业发展领导小组副\n' +
-              '组长马安武一同调研。',
-            date: '2020-07-05'
-          }
-        ]
+        news_list: []
       };
     },
     // beforeRouteUpdate(to) {
     //   this.index = parseInt(to.query.on);
     //   // this.my_load(this.index);
     // },
-    // mounted() {
-    //   this.index = parseInt(this.$route.query.on);
-    //   // this.my_load(this.index);
-    // },
+    mounted() {
+      this.type = parseInt(this.$route.query.type) || 1;
+      this.getNewsList();
+    },
     methods: {
-      tab(on) {
-        this.index = on;
-        // this.my_load(on);
+      // 点击去详情页
+      to_new_detail(id) {
+        this.$router.push({
+          path: '/newDetail',
+          query: {
+            id: id, nav: 4, type: this.type
+          }
+        })
       },
+      // 切换公司动态或者行业动态
+      tab(on) {
+        this.type = on;
+        this.getNewsList();
+      },
+      // 分页点击
+      current_change(current) {
+        this.page = current;
+        this.getNewsList();
+      },
+      getNewsList() {
+        let post = {
+          page: this.page,
+          perpage: 5,
+          type: this.type
+        };
+        this.utils.ajax(this, 'zh.index/newsList', post).then(res => {
+          this.utils.aliyun_format(res.list, 'pic');
+          for (let i = 0; i < res.list.length; i++) {
+            res.list[i].create_time = this.utils.date_format(res.list[i].create_time, 'yyyy-MM-dd');
+          }
+          console.log(res);
+          this.news_list = res.list;
+          this.total = res.count;
+        })
+      }
     }
   };
 </script>
@@ -176,10 +195,13 @@
               height: 120px;
               background-color: #eeeeee;
               border-radius: 1px;
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
 
-              img {
-                height: 100%;
-              }
+              /*img {*/
+              /*height: 100%;*/
+              /*}*/
             }
 
             .new-cont {
@@ -203,7 +225,7 @@
                 margin-bottom: 10px;
               }
 
-              a {
+              a, .btn-to-detail {
                 color: #50a8ec;
                 font-size: 16px;
               }
@@ -264,7 +286,7 @@
                 color: #999999;
               }
 
-              a {
+              a, .btn-to-detail {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -282,10 +304,14 @@
               flex-shrink: 0;
               width: 460px;
               height: 100%;
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: cover;
 
-              img {
-                height: 100%;
-              }
+              /*img {*/
+              /*width: auto;*/
+              /*height: auto;*/
+              /*}*/
             }
           }
         }

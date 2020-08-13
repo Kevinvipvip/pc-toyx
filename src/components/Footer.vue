@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" ref="footer">
     <div class="w-1200">
       <div class="logo-address">
         <div class="logo">
@@ -38,7 +38,7 @@
           <router-link :to="{path:'contact',query:{nav:5}}" tag="li">联系我们</router-link>
           <router-link :to="{path:'news',query:{nav:4}}" tag="li">新闻资讯</router-link>
           <router-link :to="{path:'contact',query:{nav:5,on:2}}" tag="li">人才招聘</router-link>
-          <router-link :to="{path:'contact',query:{nav:5}}" tag="li">留言中心</router-link>
+          <router-link :to="{path:'contact',query:{nav:5,on:1}}" tag="li">留言中心</router-link>
         </ul>
         <ul>
           <li>关注我们</li>
@@ -80,6 +80,25 @@
         </p>
       </div>
     </div>
+
+    <!--全局悬浮框-->
+    <div class="fixed-windown">
+      <div class="icon-box"><img src="../assets/icon-mp.png" alt="微信小程序">
+        <p>小程序</p>
+        <div class="QR-code"><img src="../assets/mp-code.jpg"></div>
+      </div>
+      <div class="icon-box"><img src="../assets/icon-wx.png" alt="微信公众号">
+        <p>公众号</p>
+        <div class="QR-code"><img src='../assets/wx-code.jpg'></div>
+      </div>
+      <div class="icon-box can-click">
+        <a target="_blank" :href="'http://wpa.qq.com/msgrd?v=3&uin='+footer.qq+'&site=qq&menu=yes'">
+          <img src="../assets/icon-qq.png" alt="在线咨询">
+          <p>在线咨询</p>
+        </a>
+      </div>
+      <div class="icon-box can-click" @click="return_top"><img src="../assets/top-icon.png" alt="返回顶部"></div>
+    </div>
   </div>
 </template>
 
@@ -88,31 +107,51 @@
     name: 'Footer',
     data() {
       return {
-        footer: {
-          address: '',
-          email: '',
-          tel: '',
-          fax: ''
-        },
-        cate_list: []
+        footer: {},
+        cate_list: [],
+        scrollTop: null
       };
     },
     created() {
+      window.addEventListener('scroll', this.handleScroll);
       this.utils.ajax(this, 'zh.index/aboutUs').then(res => {
-        this.footer.address = res.address;
-        this.footer.email = res.email;
-        this.footer.tel = res.tel;
-        this.footer.fax = res.fax;
+        this.footer = res;
       });
       this.utils.ajax(this, 'zh.index/cateList').then(res => {
         this.cate_list = res;
       })
+    },
+
+    destroyed() {
+      window.removeEventListener('scroll', this.handleScroll)
+    },
+    methods: {
+      return_top() {
+        console.log(1111)
+        let timer = null, that = this;
+        cancelAnimationFrame(timer);
+        timer = requestAnimationFrame(function fn() {
+          if (that.scrollTop > 0) {
+            that.scrollTop -= 200;
+            document.body.scrollTop = document.documentElement.scrollTop = that.scrollTop;
+            timer = requestAnimationFrame(fn)
+          } else {
+            cancelAnimationFrame(timer);
+            that.visiable = false;
+          }
+        })
+      },
+
+      handleScroll() {
+        this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      }
     }
   };
 </script>
 
 <style lang="scss" scoped>
   .footer {
+    min-width: 1200px;
     height: 425px;
     background: #546c81;
     display: flex;
@@ -239,11 +278,100 @@
       }
     }
 
-    /*/deep/ .el-tooltip__popper {*/
-    /*.code-img {*/
-    /*width: 100px;*/
-    /*height: 100px;*/
-    /*}*/
-    /*}*/
+    .fixed-windown {
+      width: 80px;
+      padding-left: 20px;
+      background-color: #50a8ec;
+      position: fixed;
+      z-index: 9999;
+      right: 0;
+      top: 50%;
+      transform: translate(80%, -50%);
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+
+      &:hover {
+        transform: translate(0, -50%);
+        /*transform: translateX(0);*/
+        transition: 0.5s;
+        padding: 0;
+      }
+
+      .icon-box {
+        position: relative;
+        width: 100%;
+        height: 80px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #ffffff;
+        display: flex;
+        justify-content: center;
+        flex-flow: column;
+        align-items: center;
+
+        .QR-code {
+          position: absolute;
+          display: none;
+          top: -15px;
+          left: -140px;
+          width: 115px;
+          height: 109px;
+          background-color: #50a8ec;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 85%;
+            height: 85%;
+            display: block;
+          }
+        }
+
+        .QR-code:after {
+          content: '';
+          position: absolute;
+          border-left: 7.5px solid #50a8ec;
+          border-top: 7.5px solid transparent;
+          border-bottom: 7.5px solid transparent;
+          right: -7.5px;
+          top: 47px;
+        }
+
+        img {
+          display: block;
+          width: 38px;
+          height: 38px;
+        }
+
+        p {
+          font-size: 16px;
+          color: #ffffff;
+          margin-top: 5px;
+        }
+      }
+
+      .icon-box:last-child {
+        border: none;
+      }
+
+      .icon-box:hover .QR-code {
+        display: flex;
+      }
+
+      .can-click {
+        cursor: pointer;
+
+        a {
+          display: flex;
+          justify-content: center;
+          flex-flow: column;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
   }
 </style>

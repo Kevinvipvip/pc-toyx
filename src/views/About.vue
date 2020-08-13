@@ -164,7 +164,7 @@
               });
               break;
             case 3:
-              console.log(this.$refs.scroll_three.offsetTop)
+              // console.log(this.$refs.scroll_three.offsetTop)
               this.page = '企业文化';
               window.scrollTo({
                 top: this.$refs.scroll_three.offsetTop,

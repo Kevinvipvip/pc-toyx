@@ -41,6 +41,7 @@
               </div>
             </swiper-slide>
             <swiper-slide class="classify-item" v-for="(item,index) in cate_list" :key="index" :id="item.id">
+
               <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
                 <div class="item-img"><img :src="item.icon2"/></div>
               </div>
@@ -62,7 +63,7 @@
           <h4>研发中心</h4>
           <p>
             同缘兴不断追寻新的发展之路，在未来不仅是毛绒玩具，而是毛绒玩具加智能，毛绒玩具加工业等。向时代靠拢，与新技术融合，朝极致进发。目前的研发中心拥有多名丰富经验的研发人员，通过新创意、新技术提升现有产品的质量、属性以及传播性。</p>
-          <router-link class="btn-more" :to="{path:'/about',query:{index:1}}">Jion Us</router-link>
+          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
         </div>
       </div>
       <!--孵化中心-->
@@ -75,7 +76,7 @@
           <h4>INCUBATION</h4>
           <h4>孵化中心</h4>
           <p>为不同的元素重构，把握市场需求以及产品定位，孵化有属性有内涵的毛绒玩具，将玩具多样化、品牌化且具有传播性的事业。目前我们的孵化基地已成功产出上百种毛绒玩具并推动销售额的大幅度提升。</p>
-          <router-link class="btn-more" :to="{path:'/about',query:{index:1}}">Jion Us</router-link>
+          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
         </div>
       </div>
       <!--定制服务-->
@@ -89,7 +90,7 @@
           <h4>定制服务</h4>
           <p>
             同缘兴玩具成立27年，励志开发新型、创新，符合用户需求的毛绒产品。目前毛绒玩具产品种类达千余种，完全能够为用户提供个性化设计、专属服务的定制服务。为了满足新老顾客对产品的体验，公司将提供免费打样服务以保障用户买的放心，用的舒心，如有需要来图即可。</p>
-          <router-link class="btn-more" :to="{path:'/about',query:{index:1}}">来图免费打样</router-link>
+          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">来图免费打样</router-link>
         </div>
       </div>
       <!--合作伙伴-->
@@ -105,7 +106,7 @@
             <div class="partner-img"><img src="../assets/partner1.png"/></div>
             <div class="partner-img"><img src="../assets/partner2.png"/></div>
           </div>
-          <router-link class="btn-more" :to="{path:'/about',query:{index:1}}">Jion Us</router-link>
+          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
         </div>
       </div>
     </div>
@@ -160,19 +161,6 @@
           speed: 800,
           direction: 'horizontal',
           on: {
-            // tap(e) {
-            //   // let id = news_arr[this.realIndex].id;
-            //   console.log(e);
-            //   // _self.$router.push({
-            //   //   name: 'newdetail',
-            //   //   query: {
-            //   //     // nav: 4,
-            //   //     id: id,
-            //   //     url: '/',
-            //   //     name: '首页'
-            //   //   }
-            //   // })
-            // },
             slideChange() {
               _self.isActive = this.activeIndex;
               // console.log(_self.isActive);
@@ -193,7 +181,6 @@
                     query: { nav: 2, on: 1, cate: cate_id }
                   })
                   ;
-                  console.log(cate_id);
                 }
               }
             }
@@ -229,7 +216,13 @@
       });
       Promise.all([promise1, promise2]).then(() => {
         loading.close();
-      })
+      });
+
+    },
+    mounted() {
+      this.$nextTick(() => {
+        console.log(this.$refs);
+      });
     },
     methods: {
       // 点击轮播图进详情
@@ -290,6 +283,8 @@
 
 <style scoped lang="scss">
   .home {
+    min-width: 1400px;
+
     .swiper {
       height: 980px;
 
@@ -354,7 +349,8 @@
           height: 100%;
           position: absolute;
           top: 0;
-          left: 0;
+          left: 50%;
+          transform: translateX(-50%);
           display: flex;
           justify-content: center;
           align-items: center;
@@ -377,24 +373,8 @@
             right: 90px;
             width: 680px;
           }
-
-          /*.ice-cake {*/
-          /*width: 100%;*/
-          /*height: 100%;*/
-          /*background: url("../assets/ice-cake-left.png") no-repeat;*/
-          /*background-position: calc(50% - 250px) center;*/
-          /*background-size: 1041px 551px;*/
-          /*display: flex;*/
-          /*justify-content: center;*/
-          /*align-items: center;*/
-
-          /*.img-box {*/
-          /*margin-left: 800px;*/
-          /*width: 680px;*/
-          /*height: 680px;*/
-          /*}*/
-          /*}*/
         }
+
 
         .rank2 {
           position: relative;
@@ -433,7 +413,6 @@
           background-color: rgba(75, 140, 213, 0.5);
 
           .classify {
-            /*position: relative;*/
             overflow: hidden;
             height: 100%;
             display: flex;
@@ -441,7 +420,6 @@
             justify-content: flex-end;
 
             .home-cate-box {
-              /*position: absolute;*/
               z-index: 2;
               margin-right: 59px;
               position: relative;
@@ -452,10 +430,8 @@
             }
 
             .swiper-classify {
-              /*position: absolute;*/
               z-index: 1;
               flex-grow: 1;
-              /*margin-right: 360px;*/
               position: relative;
               right: -30px;
               height: 100%;
@@ -465,16 +441,13 @@
                 justify-content: flex-end;
 
                 .classify-item {
-                  /*float: right;*/
                   margin-left: 40px;
-                  cursor: pointer;
-                  transform: translateY(289px);
                   width: 216px;
-                  height: 286px !important;
+                  cursor: pointer;
 
-                  &:nth-child(even) {
-                    transform: translateY(149px);
-                  }
+                  transform: translateY(289px);
+                  transition: 500ms;
+                  height: 286px !important;
 
                   .item-img-bg {
                     width: 216px;
@@ -505,61 +478,22 @@
                     text-align: center;
                   }
 
-                  &:hover {
-                    transform: translateY(149px);
 
-                    &:nth-child(even) {
-                      transform: translateY(289px);
+                  &:nth-child(even) {
+                    transform: translateY(149px);
+                  }
+
+                  &:hover {
+                    .item-img-bg {
+                      .item-img {
+                        transform: scale(1.2);
+                        transition: 0.5s;
+                      }
                     }
                   }
                 }
               }
             }
-
-            /*ul {*/
-            /*position: absolute;*/
-            /*z-index: 1;*/
-            /*right: 360px;*/
-
-            /*li {*/
-            /*float: right;*/
-            /*transform: translateY(149px);*/
-            /*margin-left: 34px;*/
-
-            /*&:nth-child(2n) {*/
-            /*transform: translateY(289px);*/
-            /*}*/
-
-            /*.item-img-bg {*/
-            /*width: 216px;*/
-            /*height: 253px;*/
-            /*background: url("../assets/ice-cake-small.png") center no-repeat;*/
-            /*display: flex;*/
-            /*justify-content: center;*/
-            /*align-items: center;*/
-
-            /*.item-img {*/
-            /*width: 115px;*/
-            /*height: 151px;*/
-
-            /*img {*/
-            /*width: 100%;*/
-            /*height: 100%;*/
-            /*display: block;*/
-            /*}*/
-            /*}*/
-            /*}*/
-
-            /*h3 {*/
-            /*margin-top: 12px;*/
-            /*font-size: 16px;*/
-            /*color: #ffffff;*/
-            /*font-weight: normal;*/
-            /*text-align: center;*/
-            /*}*/
-
-            /*}*/
-            /*}*/
           }
 
         }
@@ -605,9 +539,6 @@
 
           .rank2 {
             align-items: flex-end;
-            /*p{*/
-            /*text-align: right;*/
-            /*}*/
           }
         }
 
@@ -621,6 +552,30 @@
 
               .partner-img {
                 margin-right: 56px;
+              }
+            }
+          }
+        }
+
+        @media screen and (max-width: 1650px) {
+
+          .rank2 {
+            width: auto;
+            margin-left: 200px;
+          }
+
+          &.m2, &.m4 {
+            .rank2 {
+              margin-left: 0;
+              margin-right: 200px;
+            }
+          }
+          &.m1 {
+            .classify {
+              .swiper-classify {
+                /deep/ .swiper-wrapper {
+                  justify-content: initial;
+                }
               }
             }
           }

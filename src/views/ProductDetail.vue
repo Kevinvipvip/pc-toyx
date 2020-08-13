@@ -36,7 +36,7 @@
             </swiper>
           </div>
 
-          <div class="detail-cont">
+          <div class="parameter-cont">
             <h3 class="one-line-ellipsis">{{detail.name}}</h3>
             <p><span>货号：{{detail.number}}</span></p>
             <p><span>材质：{{detail.caizhi}}</span><span>毛绒分类：{{detail.cate_name}}</span></p>
@@ -105,6 +105,7 @@
 <script>
   import 'swiper/dist/css/swiper.css'// 这里注意具体看使用的版本是否需要引入样式，以及具体位置。
   import { swiper, swiperSlide } from 'vue-awesome-swiper' // 引入slider组件
+  var _self;
 
   export default {
     components: {
@@ -129,49 +130,51 @@
         recommend: [],//其他推荐
         // 轮播图配置
         swiperOption: {
-          loop: true,
+          // loop: true,
           loopedSlides: 5, // looped slides should be the same
           // spaceBetween: 10,
-          // autoplay: {
-          //   delay: 3000,
-          //   stopOnLastSlide: false,
-          //   disableOnInteraction: false
-          // },
+          autoplay: {
+            delay: 3000,
+            stopOnLastSlide: false,
+            disableOnInteraction: true
+          },
         },
 
         swiperOptionThumbs: {
           loop: true,
-          // autoplay: {
-          //   delay: 3000,
-          //   stopOnLastSlide: false,
-          //   disableOnInteraction: false
-          // },
           loopedSlides: 5, // looped slides should be the same
           spaceBetween: 12,
-          centeredSlides: true,
-          slidesPerView: 'auto',
+          // centeredSlides: true,
+          slidesPerView: 5,
           touchRatio: 0.2,
-          slideToClickedSlide: true
+          slideToClickedSlide: true,
+          on: {
+            tap() {
+              const swiperTop = _self.$refs.swiperTop.swiper;
+              swiperTop.slideTo(this.clickedIndex);
+            }
+          }
         }
       };
     },
     mounted() {
+      _self = this;
       this.id = parseInt(this.$route.query.id);
       this.internal = parseInt(this.$route.query.internal);
       this.utils.ajax(this, 'zh.index/aboutUs').then(res => {
         this.tel = res.tel;
       });
       this.getProductDetail(() => {
-        this.$nextTick(() => {
-          // swiper1 = this.$refs.swiperTop;
-          // swiper2 = this.$refs.swiperThumbs;
-          const swiperTop = this.$refs.swiperTop.swiper;
-          const swiperThumbs = this.$refs.swiperThumbs.swiper;
-          // console.log(swiperTop);
-          // console.log(swiperThumbs);
-          // swiperTop.controller.control = swiperThumbs;
-          swiperThumbs.controller.control = swiperTop;
-        })
+        // this.$nextTick(() => {
+        // swiper1 = this.$refs.swiperTop;
+        // swiper2 = this.$refs.swiperThumbs;
+        // const swiperTop = this.$refs.swiperTop.swiper;
+        // const swiperThumbs = this.$refs.swiperThumbs.swiper;
+        // console.log(swiperTop);
+        // console.log(swiperThumbs);
+        // swiperTop.controller.control = swiperThumbs;
+        // swiperThumbs.controller.control = swiperTop;
+        // })
       });
       this.getGuessYouLikeList();
     },
@@ -307,6 +310,7 @@
       .product-box {
         margin: 40px 0 100px 134px;
         display: flex;
+        justify-content: space-between;
         /*轮播图样式*/
         .detail-swiper {
           flex-shrink: 0;
@@ -334,6 +338,7 @@
 
               .swiper-item {
                 width: 20%;
+                cursor: pointer;
               }
             }
           }
@@ -341,12 +346,10 @@
         }
 
         /*参数布局样式*/
-        .detail-cont {
-          flex-grow: 1;
-          margin-left: 42px;
+        .parameter-cont {
+          width: 596px;
 
           h3 {
-            width: calc(100% - 1px);
             font-size: 32px;
             color: #333333;
             font-weight: normal;

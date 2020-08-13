@@ -8,8 +8,8 @@
     <!--tab-->
     <div class="tab-box">
       <div class="tab">
-        <p :class="index === 1?'on':''" @click="tab(1)">联系方式</p>
-        <p :class="index === 2?'on':''" @click="tab(2)">人才招聘</p>
+        <p :class="active === 1?'on':''" @click="tab(1)">联系方式</p>
+        <p :class="active === 2?'on':''" @click="tab(2)">人才招聘</p>
       </div>
     </div>
 
@@ -17,19 +17,19 @@
       <ul>
         <li>
           <div class="icon-box"><img src="../assets/icon-address.png"/></div>
-          <p>地 址：天津市蓟州区礼明庄镇孟家楼村</p>
+          <p>地 址：{{us.address}}</p>
         </li>
         <li>
           <div class="icon-box"><img src="../assets/icon-tel.png"/></div>
-          <p>联系电话：022-2989-7418</p>
+          <p>联系电话：{{us.tel}}</p>
         </li>
         <li>
           <div class="icon-box"><img src="../assets/icon-cz.png"/></div>
-          <p>传 真：022-2989-8486</p>
+          <p>传 真：{{us.fax}}</p>
         </li>
         <li>
           <div class="icon-box"><img src="../assets/icon-email.png"/></div>
-          <p>邮 箱：luckytoytj@vip.sina.com</p>
+          <p>邮 箱：{{us.email}}</p>
         </li>
       </ul>
       <div class="focus-us">
@@ -57,11 +57,13 @@
             <p>留言后客服将在24小时与您联系</p>
           </h3>
           <div class="form">
-            <div class="ipt-box"><input type="text" placeholder="请输入您的姓名"></div>
-            <div class="ipt-box"><input type="text" placeholder="请输入您的联系方式" maxlength="11"
-                                        oninput="value=value.replace(/[^\d]/g,'')"></div>
-            <div class="ipt-box textarea"><textarea placeholder="请输入您的需求留言"></textarea></div>
-            <div class="btn-submit">提交</div>
+            <div class="ipt-tip" :style="btn_no_cilck?'color: #333;':'color: #ffffff;'">{{ipt_tip}}</div>
+            <div class="ipt-box"><input type="text" v-model="name" placeholder="请输入您的姓名"></div>
+            <div class="ipt-box"><input type="text" v-model="phone" placeholder="请输入您的联系方式" maxlength="11"
+                                        @blur="blur_reg_tel" oninput="value=value.replace(/[^\d]/g,'')"></div>
+            <div class="ipt-box textarea"><textarea v-model="desc" placeholder="请输入您的需求留言"></textarea></div>
+            <div class="btn-submit" @click="submit_message" v-if="btn_no_cilck">提交</div>
+            <div class="btn-submit" style="opacity: 0.6;cursor: auto" v-else>提交</div>
           </div>
         </div>
       </div>
@@ -78,44 +80,22 @@
               <p>发布时间</p>
             </div>
           </li>
-          <li @mouseenter="hover(1)" @mouseleave="hover(1)" :class="hover_on === 1?'on':''">
+          <li @mouseenter="hover(item.id)" @mouseleave="hover(item.id)" :class="hover_on === item.id?'on':''"
+              v-for="(item,index) in recruit" :key="index">
             <div class="item-recruit">
-              <p>UI设计师</p>
-              <p>8人</p>
-              <p>天津市西青区</p>
-              <p>2020-05-20</p>
+              <p>{{item.position}}</p>
+              <p>{{item.num}}人</p>
+              <p>{{item.workplace}}</p>
+              <p>{{item.create_time}}</p>
             </div>
             <div class="recruit-detail">
               <div class="detail">
                 <span>岗位需求：</span>
-                <p>1、主动利用多渠道寻找区域内淘宝天猫电商企业，制定营销方案销售Ai软件产品；
-                  2、分析客户需求与痛点，总结市场、行业特征及规律，为客户提供专业的电子商务营销方案；
-                  3、希望你勤奋、激情，渴望不断突破自己，不在乎吃苦，抗的住压力；
-                  4、计算机软件、市场营销、电子商务、信息管理等相关专业优先；
-                  5、OPEN的企业文化，阿里创业团队，云锋基金、阿米巴资本投资，国内领先的AI人工智能公司，如果你有梦想，那这里是实现梦想的地方；
-                  6、弹性工作制，需完成每周拜访量考核；</p>
+                <p>{{item.demand}}</p>
               </div>
-              <div class="btn-apply">申请岗位</div>
-            </div>
-          </li>
-          <li @mouseenter="hover(2)" @mouseleave="hover(2)" :class="hover_on === 2?'on':''">
-            <div class="item-recruit">
-              <p>前端开发工程师</p>
-              <p>28人</p>
-              <p>天津市西青区</p>
-              <p>2020-06-15</p>
-            </div>
-            <div class="recruit-detail">
-              <div class="detail">
-                <span>岗位需求：</span>
-                <p>1、主动利用多渠道寻找区域内淘宝天猫电商企业，制定营销方案销售Ai软件产品；
-                  2、分析客户需求与痛点，总结市场、行业特征及规律，为客户提供专业的电子商务营销方案；
-                  3、希望你勤奋、激情，渴望不断突破自己，不在乎吃苦，抗的住压力；
-                  4、计算机软件、市场营销、电子商务、信息管理等相关专业优先；
-                  5、OPEN的企业文化，阿里创业团队，云锋基金、阿米巴资本投资，国内领先的AI人工智能公司，如果你有梦想，那这里是实现梦想的地方；
-                  6、弹性工作制，需完成每周拜访量考核；</p>
+              <div class="btn-apply">
+                <a target="_blank" :href="'http://wpa.qq.com/msgrd?v=3&uin='+us.qq+'&site=qq&menu=yes'">申请岗位</a>
               </div>
-              <div class="btn-apply">申请岗位</div>
             </div>
           </li>
         </ul>
@@ -129,25 +109,101 @@
     data() {
       return {
         banner: this.config.banner,//banner图
-        index: 1,
+        active: 1,
+        us: {},
+
+        // 留言中心
+        name: '',
+        phone: '',
+        desc: '',
+        ipt_tip: '',
+        btn_no_cilck: true,
 
         hover_on: 1,//人才招聘hover效果
+        recruit: []//人才招聘列表
       }
     },
-    // beforeRouteUpdate(to) {
-    //   // console.log(to);
-    //   this.index = parseInt(to.query.index);
-    // },
+    beforeRouteUpdate(to) {
+      // console.log(to);
+      this.active = parseInt(to.query.on) || 1;
+    },
     mounted() {
-      // this.index = parseInt(this.$route.query.index);
+      this.active = parseInt(this.$route.query.on) || 1;
+      this.getUsData();
+      this.getZhaopinList();
     },
     methods: {
       tab(on) {
-        this.index = on;
+        this.active = on;
         // this.my_load(on);
       },
       hover(on) {
         this.hover_on = on;
+      },
+
+      // 点击提交信息到后台
+      submit_message() {
+        if (!this.name.trim()) {
+          this.ipt_tip = '请输入你的姓名';
+          // this.$message('请输入内容后提交');
+        } else if (!this.phone.trim()) {
+          this.ipt_tip = '请输入你的联系方式';
+          // this.$message('请输入你的姓名');
+        } else if (!this.desc.trim()) {
+          this.ipt_tip = '请输入内容后提交';
+          // this.$message('请输入你的联系方式');
+        } else if (!this.config.tel_reg.test(this.phone)) {
+          this.ipt_tip = '请输入正确的手机号';
+          // this.$message('请输入内容后提交');
+        } else {
+          let post = {
+            name: this.name,
+            tel: this.phone,
+            message: this.desc
+          };
+          // console.log(post);
+          this.utils.ajax(this, 'zh.index/leaveMessage', post).then(() => {
+            this.$alert('您的留言信息已提交到后台，感谢您的留言。', '留言成功', {
+              confirmButtonText: '确定',
+              callback: () => {
+                this.desc = '';
+                this.name = '';
+                this.phone = '';
+                this.btn_no_cilck = false;
+                this.ipt_tip = '您的留言信息已提交到后台，感谢您的留言。';
+              }
+            });
+          })
+        }
+      },
+      // 验证电话号码
+      blur_reg_tel() {
+        if (!this.phone.trim()) {
+          this.ipt_tip = '';
+        } else {
+          if (!this.config.tel_reg.test(this.phone)) {
+            this.ipt_tip = '请输入正确的手机号';
+          } else {
+            this.ipt_tip = '';
+          }
+        }
+      },
+
+      // 人才招聘列表
+      getZhaopinList() {
+        this.utils.ajax(this, 'zh.index/zhaopinList').then(res => {
+          this.hover_on = res[0].id;
+          // console.log(res);
+          for (let i = 0; i < res.length; i++) {
+            res[i].create_time = this.utils.date_format(res[i].create_time, 'yyyy-MM-dd')
+          }
+          this.recruit = res;
+        })
+      },
+      getUsData() {
+        this.utils.ajax(this, 'zh.index/aboutUs').then(res => {
+          this.us = res;
+        })
       }
     }
   };
@@ -307,6 +363,17 @@
 
           .form {
             margin: 24px 22px;
+            position: relative;
+
+            .ipt-tip {
+              position: absolute;
+              color: #ff4c4c;
+              font-size: 12px;
+              left: 0;
+              bottom: 50px;
+              text-align: center;
+              width: 100%;
+            }
 
             .ipt-box {
               height: 40px;
@@ -400,10 +467,6 @@
           li {
             position: relative;
             overflow: hidden;
-            /*transform-origin: center top;*/
-            height: 60px;
-            /*transform: scaleY(0);*/
-            /*transition: 0.5s;*/
 
             &:first-child {
               .item-recruit {
@@ -448,19 +511,25 @@
             }
 
             .recruit-detail {
-              padding: 30px 50px;
-              width: 100%;
-              transform-origin: center top;
-              transform: scaleY(0);
-              transition: 200ms;
+              background-color: #fafafa;
+              overflow: hidden;
+              width: calc(100% - 100px);
+              margin: 0 auto;
+              height: 0;
+              display: flex;
+              flex-flow: column;
+              justify-content: space-around;
+              transition: all 0.5s;
               box-sizing: border-box;
 
               .detail {
-                /*margin-top: 30px;*/
+                margin-top: 30px;
                 display: flex;
                 justify-content: space-between;
 
                 span {
+                  display: block;
+                  margin-left: 35px;
                   flex-shrink: 0;
                   color: #50a8ec;
                   font-size: 18px;
@@ -480,20 +549,23 @@
                 height: 60px;
                 background-color: #50a8ec;
                 border-radius: 10px;
-                color: #ffffff;
-                font-size: 14px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 50px auto 0;
+                margin: 50px auto 30px;
+
+                a {
+                  color: #ffffff;
+                  font-size: 14px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                  height: 100%;
+                }
               }
             }
 
             &.on {
-              height: auto;
-
               .recruit-detail {
-                transform: scaleY(1);
+                height: 420px;
               }
             }
           }
