@@ -5,7 +5,7 @@
         <swiper-slide class="swiper-item" v-for="(v,index) in slide_list" :key="index">
           <div class="swiper-img" :style="'background-image: url('+v.pic+')'">
             <div class="swiper-title"
-                 :style="'background: url('+swiper_mask+') no-repeat;'">
+                 :style="'background-image: url('+swiper_mask+');'">
               <div class="t-title animated" :class="{fadeInDownBig:index == isActive}">
                 <h4>{{v.en_title}}</h4>
                 <h3>{{v.title}}</h3>
@@ -298,10 +298,11 @@
           background-position: center;
 
           .swiper-title {
-
+            background-repeat: no-repeat;
             height: 100%;
             width: 73%;
-            background-position: left;
+            background-position: center;
+            background-size: 100%;
             display: flex;
             align-items: center;
             justify-content: center;

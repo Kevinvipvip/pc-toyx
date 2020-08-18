@@ -67,7 +67,7 @@
 
   /*banner样式*/
   .banner {
-    height: 225px;
+    height: 120px;
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: 100%;
