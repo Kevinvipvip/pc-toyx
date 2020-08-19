@@ -43,19 +43,19 @@
         <ul>
           <li>关注我们</li>
           <li class="have-code">
-            <el-tooltip placement="top">
+            <el-tooltip placement="right">
               <div slot="content" style="width: 100px;height: 100px;"><img src="../assets/wx-code.jpg"/></div>
               <span>微信公众号</span>
             </el-tooltip>
           </li>
           <li class="have-code">
-            <el-tooltip placement="top">
+            <el-tooltip placement="right">
               <div slot="content" style="width: 100px;height: 100px;"><img src="../assets/mp-code.jpg"/></div>
               <span>小程序</span>
             </el-tooltip>
           </li>
           <li>
-            <el-tooltip placement="top">
+            <el-tooltip placement="right">
               <div slot="content" style="width: 100px;height: 100px;"><img src="../assets/1688-code.png"/></div>
               <a href="https://tongyuanxingtoy.1688.com?spm=a2615.2177701.autotrace-shopSigns.2.134e1001sVuPec"
                  target="_blank">阿里商城</a>
@@ -72,11 +72,11 @@
           <span>备案许可证号<a href="http://www.beian.miit.gov.cn/" target="_blank">津ICP备20006105号-1</a></span>
         </p>
         <p>
-          <router-link to="/1">免责声明</router-link>
+          <router-link to="/">免责声明</router-link>
           |
-          <router-link to="/2">版权声明</router-link>
-          |
-          <router-link to="/3">网站地图</router-link>
+          <router-link to="/">版权声明</router-link>
+          <!--|-->
+          <!--<router-link to="/">网站地图</router-link>-->
         </p>
       </div>
     </div>
@@ -118,7 +118,13 @@
         this.footer = res;
       });
       this.utils.ajax(this, 'zh.index/cateList').then(res => {
-        this.cate_list = res;
+        let cate = [];
+        for (let i = 0; i < res.length; i++) {
+          if (i <= 3) {
+            cate.push(res[i]);
+          }
+        }
+        this.cate_list = cate;
       })
     },
 
@@ -238,8 +244,16 @@
               color: #eeeeee;
             }
 
+            &.have-code:hover {
+              color: #cccccc;
+            }
+
             &:hover {
               color: #50a8ec;
+
+              a {
+                color: #50a8ec;
+              }
             }
           }
         }
@@ -273,6 +287,10 @@
 
           a {
             color: #999;
+
+            &:hover {
+              color: #cccccc;
+            }
           }
         }
       }

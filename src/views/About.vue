@@ -8,10 +8,7 @@
     <div class="crumb-tab">
       <div class="w-1200">
         <div class="crumb">
-          <p>
-            <router-link to="/"> 首页</router-link>
-            >关于我们>{{page}}
-          </p>
+          <p>关于我们>{{page}} </p>
         </div>
         <div class="tab">
           <p :class="index === 1?'on':''" @click="tab(1)">公司介绍</p>
@@ -298,7 +295,7 @@
           align-items: center;
           justify-content: center;
 
-          &.on:after {
+          &.on:after, &:hover:after {
             content: '';
             position: absolute;
             bottom: 0;

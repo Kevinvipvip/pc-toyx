@@ -7,8 +7,7 @@
       <div class="nav">
         <ul>
           <li v-for="item in nav_data" :key="item.id">
-            <p :class="active === item.id?'active':''" v-if="item.s_nav">{{item.name}}</p>
-            <p :class="active === item.id?'active':''" v-else @click="nav_click(item.id,item.url)">{{item.name}}</p>
+            <p :class="active === item.id?'active':''" @click="nav_click(item.id,item.url,1)">{{item.name}}</p>
             <i v-if="item.s_nav" class="icon-nav"></i>
             <ul class="second-nav" v-if="item.s_nav">
               <li v-for="(v,i) in item.s_nav" @click="nav_click(item.id,v.url,v.index)" :key="i">
@@ -47,19 +46,15 @@
     },
     methods: {
       nav_click(id, url, index) {
+        console.log(id, url, index);
         this.active = id;
-        let query = {};
-        if (index) {
-          query.nav = id;
-          query.on = index;
-        } else {
-          query.nav = id;
-        }
+        let query = {
+          nav: id,
+          on: index
+        };
         if (url === this.$route.path) {
-          if (index) {
-            if (index !== parseInt(this.$route.query.on)) {
-              this.$router.push({ name: 'center', query: query });
-            }
+          if (index !== parseInt(this.$route.query.on)) {
+            this.$router.push({ name: 'center', query: query });
           }
         } else {
           this.$router.push({ path: url, query: query });
@@ -191,6 +186,8 @@
             padding: 0 25px;
 
             p {
+              position: relative;
+              z-index: 99;
               color: #666666;
               font-size: 16px;
 

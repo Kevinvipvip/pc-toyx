@@ -33,7 +33,7 @@
 
     <!--产品列表-->
     <div class="product-list w-1200" v-loading="loading">
-      <ul>
+      <ul v-if="product_list.length">
         <router-link :to="{name:'productDetail',query:{nav:2,internal:internal,id:item.id}}" tag="li"
                      v-for="item in product_list"
                      :key="item.id">
@@ -41,8 +41,8 @@
           <div class="pic-box" :style="'background-image:url('+item.pic+')'"></div>
           <p class="one-line-ellipsis">{{item.name}}</p>
         </router-link>
-
       </ul>
+      <div class="nodata" v-else>{{nodata}}</div>
 
       <div class="page-box" v-if="total>16">
         <el-pagination
@@ -71,34 +71,31 @@
 
         product_list: [],//产品列表数据
 
-        loading: true
+        loading: true,
+
+        nodata: ''
       };
     },
     beforeRouteUpdate(to) {
       this.internal = parseInt(to.query.on);
-      if (to.query.cate) {
-        this.cate_id = parseInt(to.query.cate);
-      }
-      this.my_load(this.internal);
+      this.cate_id = parseInt(to.query.cate) || 0;
+      this.my_load(this.internal, this.cate_id);
     },
     mounted() {
       this.internal = parseInt(this.$route.query.on);
-      if (this.$route.query.cate) {
-        this.cate_id = parseInt(this.$route.query.cate);
-      }
-      this.my_load(this.internal);
+      this.cate_id = parseInt(this.$route.query.cate) || 0;
+      this.my_load(this.internal, this.cate_id);
 
       // this.my_onload();
     },
     methods: {
       tab(on) {
         this.internal = on;
-        this.my_load(on);
+        this.my_load(on, this.cate_id);
       },
 
       change_cate(cate_id) {
-        let cate = cate_id || 0;
-        this.cate_id = cate;
+        this.cate_id = cate_id || 0;
         this.getProductList();
       },
 
@@ -107,13 +104,13 @@
         this.getProductList();
       },
 
-      my_load(index) {
+      my_load(index, cate_id) {
         switch (index) {
           case 1:
             this.now_page_text = '国内产品';
             this.page = 1;
             this.cate_list = [];
-            this.cate_id = 0;
+            this.cate_id = cate_id;
             this.getCateList();
             this.getProductList();
             break;
@@ -140,6 +137,9 @@
         };
         this.loading = true;
         this.utils.ajax(this, 'zh.index/productList', post).then(res => {
+          if (!res.list.length) {
+            this.nodata = '暂无数据'
+          }
           this.utils.aliyun_format(res.list, 'pic');
           this.product_list = res.list;
           this.total = res.count;
@@ -195,7 +195,7 @@
           align-items: center;
           justify-content: center;
 
-          &.on:after {
+          &.on:after, &:hover:after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -231,7 +231,7 @@
           margin-bottom: 24px;
           cursor: pointer;
 
-          &.on {
+          &.on, &:hover {
             background-color: #50a8ec;
             color: #ffffff;
           }
@@ -260,9 +260,17 @@
             width: 100%;
             padding-bottom: 100%;
             height: 0;
+            overflow: hidden;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
+          }
+
+          &:hover {
+            .pic-box {
+              transform: scale(1.1);
+              transition: 0.5s;
+            }
           }
 
           p {

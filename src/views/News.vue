@@ -79,7 +79,7 @@
     //   // this.my_load(this.index);
     // },
     mounted() {
-      this.type = parseInt(this.$route.query.type) || 1;
+      this.type = parseInt(this.$route.query.on) || 1;
       this.getNewsList();
     },
     methods: {
@@ -88,14 +88,18 @@
         this.$router.push({
           path: '/newDetail',
           query: {
-            id: id, nav: 4, type: this.type
+            id: id, nav: 4, on: this.type
           }
         })
       },
       // 切换公司动态或者行业动态
       tab(on) {
-        this.type = on;
-        this.getNewsList();
+        this.$router.push({
+          path: '/center',
+          query: {
+            nav: 4, on: on
+          }
+        });
       },
       // 分页点击
       current_change(current) {
@@ -147,7 +151,7 @@
           align-items: center;
           justify-content: center;
 
-          &.on:after {
+          &.on:after, &:hover:after {
             content: '';
             position: absolute;
             bottom: 0;

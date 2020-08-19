@@ -5,8 +5,8 @@
       <div class="w-1200">
         <div class="crumb">
           <p>
-            <router-link to="/"> 首页</router-link>
-            >新闻资讯>
+            <router-link :to="{path:'/news',query:{nav:4,on:1}}">新闻资讯</router-link>
+            >
             <router-link :to="{path:'/news',query:{nav:4,type:type}}">{{type===1?'公司动态':'行业动态'}}</router-link>
           </p>
         </div>
@@ -98,13 +98,13 @@
     },
     // 跳转本页是参数变化后重新调取商品详情数据
     beforeRouteUpdate(to, from, next) {
-      this.type = parseInt(to.query.type);
+      this.type = parseInt(to.query.on);
       this.id = parseInt(to.query.id);
       this.getNewsDetail();
       next()
     },
     created() {
-      this.type = parseInt(this.$route.query.type);
+      this.type = parseInt(this.$route.query.on);
       this.id = parseInt(this.$route.query.id);
       this.getNewsDetail();
       // this.getNewsList();
@@ -165,9 +165,9 @@
           query: {
             nav: 4,
             id: id,
-            type: this.type
-      }
-      })
+            on: this.type
+          }
+        })
       },
 
       // // 获取延展阅读数据
@@ -458,7 +458,7 @@
             }
 
             li:hover, .on {
-              color: #af311a;
+              color: #50a8ec;
             }
           }
         }

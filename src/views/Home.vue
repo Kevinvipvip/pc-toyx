@@ -163,14 +163,18 @@
           on: {
             slideChange() {
               _self.isActive = this.activeIndex;
-              // console.log(_self.isActive);
-              // console.log('改变了，activeIndex为' + this.activeIndex)
             }
           }
         },
         classify: {
           slidesPerView: 'auto',
           initialSlide: 0,
+          // loop: true,
+          // autoplay: {
+          //   delay: 3000,
+          //   stopOnLastSlide: false,
+          //   disableOnInteraction: false
+          // },
           on: {
             tap() {
               if (this.clickedSlide) {

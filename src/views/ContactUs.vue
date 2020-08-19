@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="contact-one w-1200">
+    <div class="contact-one w-1200" ref="scroll_one">
       <ul>
         <li>
           <div class="icon-box"><img src="../assets/icon-address.png"/></div>
@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <div class="contact-two w-1200">
+    <div class="contact-two w-1200" ref="scroll_two">
       <h3>人才招聘</h3>
       <div class="recruit">
         <ul>
@@ -126,17 +126,34 @@
     beforeRouteUpdate(to) {
       // console.log(to);
       this.active = parseInt(to.query.on) || 1;
+      this.my_load(this.active);
+
     },
     mounted() {
       this.active = parseInt(this.$route.query.on) || 1;
-      this.getUsData();
-      this.getZhaopinList();
+      this.my_load(this.active);
     },
     methods: {
       tab(on) {
         this.active = on;
-        // this.my_load(on);
+        this.my_load(on);
       },
+
+      my_load(index) {
+        this.getUsData();
+        this.getZhaopinList();
+        this.$nextTick(() => {
+          switch (index) {
+            case 2:
+              window.scrollTo({
+                top: this.$refs.scroll_two.offsetTop,
+                behavior: "smooth"
+              });
+              break;
+          }
+        });
+      },
+
       hover(on) {
         this.hover_on = on;
       },
@@ -236,7 +253,7 @@
           align-items: center;
           justify-content: center;
 
-          &.on:after {
+          &.on:after, &:hover:after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -257,6 +274,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        /*@keyframes myfirst {*/
+        /*from {*/
+        /*transform: rotate(0deg);*/
+        /*}*/
+        /*to {*/
+        /*transform: rotate(360deg);*/
+        /*}*/
+        /*}*/
 
         li {
           width: 261px;
@@ -279,6 +305,13 @@
           p {
             font-size: 14px;
             color: #666666;
+          }
+
+          &:hover {
+            .icon-box {
+              transform: rotate(360deg);
+              transition: 0.5s;
+            }
           }
         }
       }
@@ -333,6 +366,10 @@
                 font-size: 14px;
                 color: #666666;
                 margin-top: 18px;
+              }
+
+              a:hover {
+                color: #50a8ec;
               }
             }
           }

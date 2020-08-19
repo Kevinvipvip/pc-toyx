@@ -47,10 +47,28 @@ let nav = [
     id: 4,
     name: '新闻资讯',
     url: '/news',
+    s_nav: [{
+      name: '公司动态',
+      url: '/news',
+      index: 1
+    }, {
+      name: '行业动态',
+      url: '/news',
+      index: 2
+    }]
   }, {
     id: 5,
     name: '联系我们',
     url: '/contact',
+    s_nav: [{
+      name: '联系方式',
+      url: '/contact',
+      index: 1
+    }, {
+      name: '人才招聘',
+      url: '/contact',
+      index: 2
+    }]
   }
 ];
 let history = [

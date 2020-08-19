@@ -5,8 +5,8 @@
       <div class="w-1200">
         <div class="crumb">
           <p>
-            <router-link to="/"> 首页</router-link>
-            >服务全球>
+            <router-link :to="{path:'/server',query:{nav:2,on:1}}"> 服务全球</router-link>
+            >
             <router-link :to="{path:'server',query:{nav:2,on:internal}}">{{internal===1?'国内产品':'国外产品'}}</router-link>
             >{{detail.name}}
           </p>
@@ -31,7 +31,9 @@
             <!--swiper2 Thumbs-->
             <swiper :options="swiperOptionThumbs" class="swiper product-thumbs" ref="swiperThumbs">
               <swiper-slide class="swiper-item" v-for="(item,index) in detail.pics" :key="index">
-                <div class="img-box" :style="'background-image: url('+item+')'"></div>
+                <div class="img-box" :style="'background-image: url('+item+')'"
+                     :class="swiper_hove_on === index?'on':''"
+                     @mouseenter="swiper_hover(index)"></div>
               </swiper-slide>
             </swiper>
           </div>
@@ -46,7 +48,7 @@
                  target="_blank">去商城购买</a></div>
             <div class="other-buy">
               <div class="other mp-buy">
-                <el-tooltip placement="top">
+                <el-tooltip placement="bottom">
                   <div slot="content" style="width: 100px;height: 100px;"><img src="../assets/mp-code.jpg"/></div>
                   <div class="icon">
                     <img src="../assets/icon-code.png"/>
@@ -128,32 +130,37 @@
         btn_no_cilck: true,
 
         recommend: [],//其他推荐
+
+        swiper_hove_on: 0,//轮播图标记
+
         // 轮播图配置
         swiperOption: {
-          // loop: true,
           loopedSlides: 5, // looped slides should be the same
-          // spaceBetween: 10,
           autoplay: {
             delay: 3000,
             stopOnLastSlide: false,
             disableOnInteraction: true
           },
+          on: {
+            slideChange() {
+              _self.swiper_hove_on = this.activeIndex;
+            }
+          }
         },
 
         swiperOptionThumbs: {
           loop: true,
           loopedSlides: 5, // looped slides should be the same
           spaceBetween: 12,
-          // centeredSlides: true,
           slidesPerView: 5,
           touchRatio: 0.2,
           slideToClickedSlide: true,
-          on: {
-            tap() {
-              const swiperTop = _self.$refs.swiperTop.swiper;
-              swiperTop.slideTo(this.clickedIndex);
-            }
-          }
+          // on: {
+          //   tap() {
+          //     const swiperTop = _self.$refs.swiperTop.swiper;
+          //     swiperTop.slideTo(this.clickedIndex);
+          //   }
+          // }
         }
       };
     },
@@ -179,6 +186,14 @@
       this.getGuessYouLikeList();
     },
     methods: {
+      swiper_hover(index) {
+        this.swiper_hove_on = index;
+        this.$nextTick(() => {
+          const top = _self.$refs.swiperTop.swiper;
+          top.slideTo(index);
+        });
+      },
+
       // 点击推荐列表进详情页
       to_center_back(id) {
         let now_query = { nav: 2, internal: this.internal, id: id };
@@ -235,7 +250,6 @@
         this.utils.ajax(this, 'zh.index/productDetail', { id: this.id }).then(res => {
           this.utils.aliyun_format(res.pics);
           res.detail = res.detail.replace(/\/ueditor\/php\/upload\//g, this.config.url + 'ueditor/php/upload/');
-          console.log(res);
           this.detail = res;
           if (complete) {
             complete();
@@ -317,7 +331,7 @@
           width: 425px;
 
           .swiper {
-            .swiper-slide {
+            .swiper-item {
               .img-box {
                 width: 100%;
                 height: 100%;
@@ -339,6 +353,13 @@
               .swiper-item {
                 width: 20%;
                 cursor: pointer;
+
+                .img-box {
+                  &.on {
+                    border: 1px solid #50a8ec;
+                    box-sizing: border-box;
+                  }
+                }
               }
             }
           }

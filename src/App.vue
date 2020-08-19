@@ -5,7 +5,6 @@
     <Footer :style="$route.meta.isHome?'min-width: 1400px':''"/>
   </div>
 </template>
-
 <style lang="scss">
   * {
     padding: 0;
@@ -30,10 +29,18 @@
 
   .page {
     min-width: 1200px;
-    min-height: calc(100vh - 100px - 425px);
+    min-height: calc(100vh - 60px - 425px);
     position: relative;
     z-index: 1;
   }
+
+  body {
+    overflow-y: scroll;
+  }
+
+  /*body::-webkit-scrollbar, #app::-webkit-scrollbar, .page::-webkit-scrollbar {*/
+  /*display: none;*/
+  /*}*/
 
   .w-1200 {
     width: 1200px;
@@ -70,7 +77,7 @@
     height: 120px;
     background-position: bottom;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
     background-color: #ffffff;
     display: flex;
     flex-flow: column;
@@ -86,8 +93,15 @@
 
     p {
       font-size: 14px;
-      color: #c5c5c5;
+      color: #ffffff;
+      opacity: 0.6;
       letter-spacing: 1px;
     }
+  }
+
+  .nodata {
+    font-size: 16px;
+    color: #999;
+    text-align: center;
   }
 </style>
