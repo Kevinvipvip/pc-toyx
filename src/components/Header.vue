@@ -6,11 +6,11 @@
       </div>
       <div class="nav">
         <ul>
-          <li v-for="item in nav_data" :key="item.id">
+          <li v-for="(item,index) in nav_data" :key="'header'+index">
             <p :class="active === item.id?'active':''" @click="nav_click(item.id,item.url,1)">{{item.name}}</p>
             <i v-if="item.s_nav" class="icon-nav"></i>
             <ul class="second-nav" v-if="item.s_nav">
-              <li v-for="(v,i) in item.s_nav" @click="nav_click(item.id,v.url,v.index)" :key="i">
+              <li v-for="(v,i) in item.s_nav" @click="nav_click(item.id,v.url,v.index)" :key="'header-s'+i">
                 <p> {{v.name}}</p></li>
             </ul>
           </li>
@@ -62,6 +62,9 @@
       },
       change_language(language) {
         this.language = language;
+        if (language === 'EN') {
+          window.open('http://www.tjluckytoy.com/pc/en/index.html', "_blank");
+        }
       }
     }
   }

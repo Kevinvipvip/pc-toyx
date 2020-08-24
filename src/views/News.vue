@@ -80,6 +80,7 @@
     // },
     mounted() {
       this.type = parseInt(this.$route.query.on) || 1;
+      console.log(this.type);
       this.getNewsList();
     },
     methods: {
@@ -94,6 +95,7 @@
       },
       // 切换公司动态或者行业动态
       tab(on) {
+        this.type = on;
         this.$router.push({
           path: '/center',
           query: {

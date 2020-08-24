@@ -7,7 +7,7 @@
           <p>
             <router-link :to="{path:'/news',query:{nav:4,on:1}}">新闻资讯</router-link>
             >
-            <router-link :to="{path:'/news',query:{nav:4,type:type}}">{{type===1?'公司动态':'行业动态'}}</router-link>
+            <router-link :to="{path:'/news',query:{nav:4,on:type}}">{{type===1?'公司动态':'行业动态'}}</router-link>
           </p>
         </div>
       </div>
@@ -105,6 +105,7 @@
     },
     created() {
       this.type = parseInt(this.$route.query.on);
+      console.log(this.type);
       this.id = parseInt(this.$route.query.id);
       this.getNewsDetail();
       // this.getNewsList();
@@ -250,7 +251,9 @@
         justify-content: space-between;
 
         .detail-cont {
-          margin-top: 60px;
+          background: #ffffff;
+          padding-top: 60px;
+          /*margin-right: 10px;*/
           flex-grow: 1;
           overflow: hidden;
 
@@ -423,8 +426,12 @@
         .news-list {
           width: 356px;
           flex-shrink: 0;
+          padding-left: 20px;
+          box-sizing: border-box;
 
           ul {
+            background: #ffffff;
+
             .news-list-title {
               height: 90px;
               background-color: #546c81;

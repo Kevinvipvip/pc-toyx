@@ -47,7 +47,7 @@
     <div class="title w-1200" ref="scroll_two"><h3><span>发展历程</span></h3></div>
     <div class="dh-box w-1200">
       <ul>
-        <li v-for="(v,i) in dh_data_left" :key="i" ref="dh_left">
+        <li v-for="(v,i) in dh_data_left" :key="'left'+i" ref="dh_left">
           <!--<div class="item">-->
           <h3>{{v.year}}</h3>
           <p>{{v.event}}</p>
@@ -55,7 +55,7 @@
         </li>
       </ul>
       <ul>
-        <li v-for="(v,i) in dh_data_right" :key="i" ref="dh_right">
+        <li v-for="(v,i) in dh_data_right" :key="'right'+i" ref="dh_right">
           <!--<div class="item">-->
           <h3>{{v.year}}</h3>
           <p>{{v.event}}</p>
@@ -69,15 +69,23 @@
     <div class="cc-box w-1200">
       <div class="item">
         <div class="img-box"><img :src="cc_data.youshi_img"/></div>
-        <p><span>{{cc_data.youshi_title}}</span><span>{{cc_data.youshi_cont}}</span></p>
-      </div>
+        <p><span class="animate__animated"
+                 :class="{'animate__bounceInRight':scroll>cc_top}">{{cc_data.youshi_title}}</span>
+          <span class="animate__animated"
+                :class="{'animate__bounceInRight':scroll>cc_top}">{{cc_data.youshi_cont}}</span></p></div>
       <div class="item">
-        <p><span>{{cc_data.yuanze_title}}</span><span>{{cc_data.yuanze_cont}}</span></p>
+        <p><span class="animate__animated"
+                 :class="{'animate__bounceInLeft':scroll>cc_top}">{{cc_data.yuanze_title}}</span>
+          <span class="animate__animated"
+                :class="{'animate__bounceInLeft':scroll>cc_top}">{{cc_data.yuanze_cont}}</span></p>
         <div class="img-box"><img :src="cc_data.yuanze_img"/></div>
       </div>
       <div class="item">
         <div class="img-box"><img :src="cc_data.mubiao_img"/></div>
-        <p><span>{{cc_data.mubiao_title}}</span><span>{{cc_data.mubiao_cont}}</span></p></div>
+        <p><span class="animate__animated"
+                 :class="{'animate__bounceInRight':scroll>cc_top}">{{cc_data.mubiao_title}}</span>
+          <span class="animate__animated"
+                :class="{'animate__bounceInRight':scroll>cc_top}">{{cc_data.mubiao_cont}}</span></p></div>
     </div>
 
     <!--荣誉资质 Honor and qualification-->
@@ -128,6 +136,10 @@
         dh_data_left: [],//左侧发展历程
         dh_data_right: [],//右侧发展历程
         cc_data: this.config.cc_data,//企业文化数据
+
+        cc_top: 0,
+        scroll: 0
+
       }
     },
     beforeRouteUpdate(to) {
@@ -136,12 +148,17 @@
       window.scrollTo(0, 0)
     },
     mounted() {
-      // console.log(this.cc_data)
+      window.addEventListener("scroll", this.scroll_tap);
       this.index = parseInt(this.$route.query.on);
       this.my_load(this.index);
       this.handle_dh_data();
     },
     methods: {
+
+      scroll_tap() {
+        this.scroll = document.documentElement.scrollTop || document.body.scrollTop;
+      },
+
       tab(on) {
         this.index = on;
         this.my_load(on);
@@ -161,7 +178,8 @@
               });
               break;
             case 3:
-              // console.log(this.$refs.scroll_three.offsetTop)
+              // console.log(this.$refs.scroll_three.offsetTop, 'three');
+              this.cc_top = this.$refs.scroll_three.offsetTop - (window.screen.availHeight / 2);
               this.page = '企业文化';
               window.scrollTo({
                 top: this.$refs.scroll_three.offsetTop,

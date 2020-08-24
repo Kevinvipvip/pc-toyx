@@ -2,7 +2,7 @@
   <div class="home page">
     <div class="swiper">
       <swiper v-if="slide_list.length>0" :options="swiperOption" class="swiper-wrap" ref="mySwiper">
-        <swiper-slide class="swiper-item" v-for="(v,index) in slide_list" :key="index">
+        <swiper-slide class="swiper-item" v-for="(v,index) in slide_list" :key="'home'+index">
           <div class="swiper-img" :style="'background-image: url('+v.pic+')'">
             <div class="swiper-title"
                  :style="'background-image: url('+swiper_mask+');'">
@@ -36,11 +36,11 @@
       <div class="home-mask m1">
         <div class="classify">
           <swiper v-if="cate_list.length>0" :options="classify" class="swiper-classify" ref="classify">
-            <swiper-slide class="classify-item" v-if="cate_list.length%2 !== 0" :key="9999999" style="cursor: auto">
+            <swiper-slide class="classify-item" v-if="cate_list.length%2 !== 0" :key="'home_cate'+9999999" style="cursor: auto">
               <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
               </div>
             </swiper-slide>
-            <swiper-slide class="classify-item" v-for="(item,index) in cate_list" :key="index" :id="item.id">
+            <swiper-slide class="classify-item" v-for="(item,index) in cate_list" :key="'home_cate'+index" :id="item.id">
 
               <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
                 <div class="item-img"><img :src="item.icon2"/></div>
@@ -465,13 +465,13 @@
 
                     .item-img {
                       width: 115px;
-                      height: 151px;
+                      /*height: 151px;*/
 
-                      img {
-                        width: 100%;
-                        height: 100%;
-                        display: block;
-                      }
+                      /*img {*/
+                      /*width: 100%;*/
+                      /*!*height: 100%;*!*/
+                      /*display: block;*/
+                      /*}*/
                     }
                   }
 

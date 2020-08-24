@@ -25,7 +25,8 @@
     <div class="cate-box w-1200">
       <ul>
         <li :class="cate_id===0?'on':''" @click="change_cate()">全部产品</li>
-        <li :class="cate_id===item.id?'on':''" v-for="item in cate_list" :key="item.id" @click="change_cate(item.id)">
+        <li :class="cate_id===item.id?'on':''" v-for="(item,index) in cate_list" :key="'server_date' + index"
+            @click="change_cate(item.id)">
           {{item.cate_name}}
         </li>
       </ul>

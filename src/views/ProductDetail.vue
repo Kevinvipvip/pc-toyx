@@ -602,6 +602,11 @@
                     background-position: center;
                     background-size: cover;
                     background-repeat: no-repeat;
+
+                    &:hover {
+                      transform: scale(1.05);
+                      transition: 0.5s;
+                    }
                   }
 
                   p {

@@ -25,7 +25,7 @@
         <ul>
           <li>服务全球</li>
           <router-link :to="{path:'/server',query:{nav:2,on:1,cate:item.id}}" tag="li" v-for="(item,index) in cate_list"
-                       :key="index">{{item.cate_name}}
+                       :key="'footer'+index">{{item.cate_name}}
           </router-link>
           <!--<router-link :to="{path:'/server',query:{nav:2,on:1,cate:1}}" tag="li">授权产品</router-link>-->
           <!--<router-link :to="{path:'/server',query:{nav:2,on:1,cate:1}}" tag="li">抓机系列</router-link>-->
@@ -69,7 +69,7 @@
       <div class="w-1200">
         <p>
           <span><a href="https://www.wcip.net" target="_blank">山海文化有限公司</a>提供技术支持</span>
-          <span>备案许可证号<a href="http://www.beian.miit.gov.cn/" target="_blank">津ICP备20006105号-1</a></span>
+          <span>备案许可证号<a href="http://beian.miit.gov.cn/" target="_blank">津ICP备20006105号-1</a></span>
         </p>
         <p>
           <router-link to="/">免责声明</router-link>

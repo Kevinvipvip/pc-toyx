@@ -3,6 +3,10 @@ let aliyun_base = 'https://testoss.psn.asia';
 let nav = [
   {
     id: 2,
+    name: '首页',
+    url: '/',
+  },{
+    id: 2,
     name: '服务全球',
     url: '/server',
     s_nav: [{
