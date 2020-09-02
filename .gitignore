@@ -2,6 +2,7 @@
 node_modules
 /dist
 /zh
+secret.js
 
 # local env files
 .env.local

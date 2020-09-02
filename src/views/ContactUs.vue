@@ -1,114 +1,135 @@
 <template>
-  <div class="contact page">
-    <div class="banner" :style="'background-image: url('+banner+')'">
-      <h3>联系我们</h3>
-      <p>让信息互通 人际更简单 合作更便捷 联系零距离</p>
-    </div>
-
-    <!--tab-->
-    <div class="tab-box">
-      <div class="tab">
-        <p :class="active === 1?'on':''" @click="tab(1)">联系方式</p>
-        <p :class="active === 2?'on':''" @click="tab(2)">人才招聘</p>
+  <div class="contact page" :style="'background-image: url('+bg_img+')'">
+    <div class="bg-mask">
+      <div class="banner" :style="'background-image: url('+banner+')'">
+        <h3>联系我们</h3>
+        <p>让信息互通 人际更简单 合作更便捷 联系零距离</p>
       </div>
-    </div>
 
-    <div class="contact-one w-1200" ref="scroll_one">
-      <ul>
-        <li>
-          <div class="icon-box"><img src="../assets/icon-address.png"/></div>
-          <p>地 址：{{us.address}}</p>
-        </li>
-        <li>
-          <div class="icon-box"><img src="../assets/icon-tel.png"/></div>
-          <p>联系电话：{{us.tel}}</p>
-        </li>
-        <li>
-          <div class="icon-box"><img src="../assets/icon-cz.png"/></div>
-          <p>传 真：{{us.fax}}</p>
-        </li>
-        <li>
-          <div class="icon-box"><img src="../assets/icon-email.png"/></div>
-          <p>邮 箱：{{us.email}}</p>
-        </li>
-      </ul>
-      <div class="focus-us">
-        <div class="focus-left">
-          <h3>关注我们</h3>
-          <ul>
-            <li>
-              <div class="img"><img src="../assets/wx-code.jpg"/></div>
-              <p>微信公众号</p>
-            </li>
-            <li>
-              <div class="img"><img src="../assets/mp-code.jpg"/></div>
-              <p>小程序商城</p>
-            </li>
-            <li>
-              <div class="img"><img src="../assets/1688-code.png"/></div>
-              <p><a href="https://tongyuanxingtoy.1688.com?spm=a2615.2177701.autotrace-shopSigns.2.134e1001sVuPec"
-                    target="_blank">1688商城</a></p>
-            </li>
-          </ul>
+      <!--tab-->
+      <div class="tab-box">
+        <div class="tab">
+          <p :class="active === 1?'on':''" @click="tab(1)">联系方式</p>
+          <p :class="active === 2?'on':''" @click="tab(2)">人才招聘</p>
         </div>
-        <div class="focus-right">
-          <h3>
-            <span>留言中心</span>
-            <p>留言后客服将在24小时与您联系</p>
-          </h3>
-          <div class="form">
-            <div class="ipt-tip" :style="btn_no_cilck?'color: #333;':'color: #ffffff;'">{{ipt_tip}}</div>
-            <div class="ipt-box"><input type="text" v-model="name" placeholder="请输入您的姓名"></div>
-            <div class="ipt-box"><input type="text" v-model="phone" placeholder="请输入您的联系方式" maxlength="11"
-                                        @blur="blur_reg_tel" oninput="value=value.replace(/[^\d]/g,'')"></div>
-            <div class="ipt-box textarea"><textarea v-model="desc" placeholder="请输入您的需求留言"></textarea></div>
-            <div class="btn-submit" @click="submit_message" v-if="btn_no_cilck">提交</div>
-            <div class="btn-submit" style="opacity: 0.6;cursor: auto" v-else>提交</div>
+      </div>
+
+      <div class="contact-one w-1200" ref="scroll_one">
+        <ul>
+          <li>
+            <div class="icon-box"><img src="../assets/icon-address.png"/></div>
+            <p>地 址：{{us.address}}</p>
+          </li>
+          <li>
+            <div class="icon-box"><img src="../assets/icon-tel.png"/></div>
+            <p>联系电话：{{us.tel}}</p>
+          </li>
+          <li>
+            <div class="icon-box"><img src="../assets/icon-cz.png"/></div>
+            <p>传 真：{{us.fax}}</p>
+          </li>
+          <li>
+            <div class="icon-box"><img src="../assets/icon-email.png"/></div>
+            <p>邮 箱：{{us.email}}</p>
+          </li>
+        </ul>
+
+        <!--百度地图-->
+        <div class="map">
+          <baidu-map class="baidu-map" :zoom="15" :scroll-wheel-zoom="true" :center="location"
+                     @ready="map_init"></baidu-map>
+        </div>
+
+        <div class="focus-us">
+          <div class="focus-left">
+            <h3>关注我们</h3>
+            <ul>
+              <li>
+                <div class="img"><img src="../assets/wx-code.jpg"/></div>
+                <p>微信公众号</p>
+              </li>
+              <li>
+                <div class="img"><img src="../assets/mp-code.jpg"/></div>
+                <p>小程序商城</p>
+              </li>
+              <li>
+                <div class="img"><img src="../assets/1688-code.png"/></div>
+                <p><a href="https://tongyuanxingtoy.1688.com?spm=a2615.2177701.autotrace-shopSigns.2.134e1001sVuPec"
+                      target="_blank">1688商城</a></p>
+              </li>
+            </ul>
+          </div>
+          <div class="focus-right">
+            <h3>
+              <span>留言中心</span>
+              <p>留言后客服将在24小时与您联系</p>
+            </h3>
+            <div class="form">
+              <div class="ipt-tip" :style="btn_no_cilck?'color: #333;':'color: #ffffff;'">{{ipt_tip}}</div>
+              <div class="ipt-box"><input type="text" v-model="name" placeholder="请输入您的姓名"></div>
+              <div class="ipt-box"><input type="text" v-model="phone" placeholder="请输入您的联系方式" maxlength="11"
+                                          @blur="blur_reg_tel" oninput="value=value.replace(/[^\d]/g,'')"></div>
+              <div class="ipt-box textarea"><textarea v-model="desc" placeholder="请输入您的需求留言"></textarea></div>
+              <div class="btn-submit" @click="submit_message" v-if="btn_no_cilck">提交</div>
+              <div class="btn-submit" style="opacity: 0.6;cursor: auto" v-else>提交</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="contact-two w-1200" ref="scroll_two">
-      <h3>人才招聘</h3>
-      <div class="recruit">
-        <ul>
-          <li>
-            <div class="item-recruit">
-              <p>职位名称</p>
-              <p>招聘人数</p>
-              <p>工作地点</p>
-              <p>发布时间</p>
-            </div>
-          </li>
-          <li @mouseenter="hover(item.id)" @mouseleave="hover(item.id)" :class="hover_on === item.id?'on':''"
-              v-for="(item,index) in recruit" :key="index">
-            <div class="item-recruit">
-              <p>{{item.position}}</p>
-              <p>{{item.num}}人</p>
-              <p>{{item.workplace}}</p>
-              <p>{{item.create_time}}</p>
-            </div>
-            <div class="recruit-detail">
-              <div class="detail">
-                <span>岗位需求：</span>
-                <p>{{item.demand}}</p>
+      <div class="contact-two w-1200" ref="scroll_two">
+        <h3>人才招聘</h3>
+        <div class="recruit">
+          <ul>
+            <li>
+              <div class="item-recruit">
+                <p>职位名称</p>
+                <p>招聘人数</p>
+                <p>工作地点</p>
+                <p>发布时间</p>
               </div>
-              <div class="btn-apply">
-                <a target="_blank" :href="'http://wpa.qq.com/msgrd?v=3&uin='+us.qq+'&site=qq&menu=yes'">申请岗位</a>
+            </li>
+            <li @mouseenter="hover(item.id)" @mouseleave="hover(item.id)" :class="hover_on === item.id?'on':''"
+                v-for="(item,index) in recruit" :key="index">
+              <div class="item-recruit">
+                <p>{{item.position}}</p>
+                <p>{{item.num}}人</p>
+                <p>{{item.workplace}}</p>
+                <p>{{item.create_time}}</p>
               </div>
-            </div>
-          </li>
-        </ul>
+              <div class="recruit-detail">
+                <div class="detail">
+                  <span>岗位需求：</span>
+                  <p>{{item.demand}}</p>
+                </div>
+                <div class="btn-apply">
+                  <a target="_blank" :href="'http://wpa.qq.com/msgrd?v=3&uin='+us.qq+'&site=qq&menu=yes'">申请岗位</a>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+  // import BaiduMap from 'vue-baidu-map/components/map/Map'
+  // import BmView from 'vue-baidu-map/components/map/MapView'
+  // import BmLocalSearch from 'vue-baidu-map/components/search/LocalSearch'
+  import icon_address from '../assets/icon-map.png'
+
   export default {
+    // components: {
+    //   BaiduMap,
+    //   BmView,
+    //   BmLocalSearch
+    // },
     data() {
       return {
         banner: this.config.banner,//banner图
+        bg_img: this.config.bg_img,
         active: 1,
         us: {},
 
@@ -120,11 +141,17 @@
         btn_no_cilck: true,
 
         hover_on: 1,//人才招聘hover效果
-        recruit: []//人才招聘列表
+        recruit: [],//人才招聘列表
+
+        // 百度地图
+        // ak: this.secret.baidu_map_ak,
+        location: {
+          lng: 117.419747,
+          lat: 39.956569
+        }
       }
     },
     beforeRouteUpdate(to) {
-      // console.log(to);
       this.active = parseInt(to.query.on) || 1;
       this.my_load(this.active);
 
@@ -132,6 +159,7 @@
     mounted() {
       this.active = parseInt(this.$route.query.on) || 1;
       this.my_load(this.active);
+      // this.map_init();
     },
     methods: {
       tab(on) {
@@ -221,6 +249,48 @@
         this.utils.ajax(this, 'zh.index/aboutUs').then(res => {
           this.us = res;
         })
+      },
+
+      map_init({ BMap, map }) {
+        this.$nextTick(() => {
+          // 初始化地图,设置中心点坐标
+          var point = new BMap.Point(this.location.lng, this.location.lat);
+          map.centerAndZoom(point, 15);
+
+          // 添加鼠标滚动缩放
+          map.enableScrollWheelZoom();
+          // 添加缩略图控件
+          // map.addControl(new BMap.OverviewMapControl({ isOpen: false, anchor: BMAP_ANCHOR_BOTTOM_RIGHT }));
+          // 添加缩放平移控件
+          // map.addControl(new BMap.NavigationControl());
+          //添加比例尺控件
+          // map.addControl(new BMap.ScaleControl());
+          //添加地图类型控件
+          //map.addControl(new BMap.MapTypeControl());
+
+          //设置标注的图标
+          var icon = new BMap.Icon(icon_address, new BMap.Size(32, 43), { anchor: new BMap.Size(16, 43) });
+          //设置标注的经纬度
+          var marker = new BMap.Marker(new BMap.Point(this.location.lng, this.location.lat), { icon: icon });
+          //把标注添加到地图上
+          map.addOverlay(marker);
+          this.utils.ajax(this, 'zh.index/aboutUs').then(us => {
+            var content = "<table>";
+            // content = content + "<tr><td> 编号：001</td></tr>";
+            content = content + "<tr><td style='text-align: center;line-height: 25px'>" + us.name + "</td></tr>";
+            content = content + "<tr><td> 地址：" + us.address + "</td></tr>";
+            content += "</table>";
+            var infowindow = new BMap.InfoWindow(content);
+            // 图标点击的时候显示标注
+            marker.addEventListener("click", function () {
+              this.openInfoWindow(infowindow);
+            });
+          });
+
+          // 标注默认显示
+          // var infoWindow = new BMap.InfoWindow(content) // 创建信息窗口对象
+          // map.openInfoWindow(infoWindow, point)
+        });
       }
     }
   };
@@ -228,8 +298,6 @@
 
 <style lang="scss" scoped>
   .contact {
-    padding-bottom: 80px;
-
     .tab-box {
       background-color: #ffffff;
       display: flex;
@@ -313,6 +381,18 @@
               transition: 0.5s;
             }
           }
+        }
+      }
+
+      /*百度地图*/
+      .map {
+        margin-top: 50px;
+        height: 400px;
+        background-color: #ffffff;
+
+        .baidu-map {
+          width: 100%;
+          height: 100%;
         }
       }
 
@@ -484,6 +564,7 @@
 
     .contact-two {
       margin-top: 80px;
+      margin-bottom: 80px;
 
       h3 {
         text-align: center;

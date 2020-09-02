@@ -33,7 +33,7 @@
     data() {
       return {
         language: '中文',
-        active: -1,
+        active: 1,
         nav_data: this.config.nav,
 
         click_flag: false

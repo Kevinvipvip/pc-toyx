@@ -3,11 +3,21 @@ import App from './App.vue'
 import router from './router'
 import axios from 'axios'
 
+// 隐秘文件挂载全局使用
+import secret from './secret'
+
+Vue.prototype.secret = secret;
+
 Vue.config.productionTip = false;
 
 // 引入ElementUI组件库
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
+// 百度地图
+import BaiduMap from 'vue-baidu-map';
+
+Vue.use(BaiduMap, { ak: secret.baidu_map_ak });
 
 Vue.use(ElementUI);
 

@@ -6,6 +6,11 @@
   </div>
 </template>
 <style lang="scss">
+  $fs14: 14px;
+  $fs16: 16px;
+  $fs18: 18px;
+  $fs30: 30px;
+  $fs32: 32px;
   * {
     padding: 0;
     margin: 0;
@@ -13,7 +18,7 @@
 
   a {
     color: #333333;
-    font-size: 14px;
+    font-size: $fs14;
     text-decoration: none;
 
   }
@@ -32,6 +37,18 @@
     min-height: calc(100vh - 60px - 425px);
     position: relative;
     z-index: 1;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100%;
+  }
+
+  /*.content {*/
+  /*}*/
+
+  .page .bg-mask {
+    min-height: calc(100vh - 60px - 425px);
+    background-color: rgba(75, 140, 213, 0.3);
+    overflow: hidden;
   }
 
   body {
@@ -85,14 +102,14 @@
     align-items: center;
 
     h3 {
-      font-size: 30px;
+      font-size: $fs30;
       font-weight: normal;
       margin-bottom: 21px;
       color: #ffffff;
     }
 
     p {
-      font-size: 14px;
+      font-size: $fs14;
       color: #ffffff;
       opacity: 0.6;
       letter-spacing: 1px;
@@ -100,7 +117,7 @@
   }
 
   .nodata {
-    font-size: 16px;
+    font-size: $fs16;
     color: #999;
     text-align: center;
   }

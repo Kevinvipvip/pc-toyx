@@ -128,7 +128,7 @@
     data() {
       return {
         swiper_mask: this.config.aliyun + 'static/swiper-mask.png',// 轮播图遮罩图片
-        index_bg: this.config.aliyun + 'static/index-bg.jpg',// 整个页面背景图
+        index_bg: this.config.bg_img,// 整个页面背景图
         ice_cake_left: this.config.aliyun + 'static/ice-cake-left.png',// 左边大冰块
         ice_cake_right: this.config.aliyun + 'static/ice-cake-right.png',// 右边大冰块
         ice_cake_small: this.config.aliyun + 'static/ice-cake-small.png',// 分类小冰块

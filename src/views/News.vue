@@ -1,60 +1,62 @@
 <template>
-  <div class="news page">
-    <div class="banner" :style="'background-image: url('+banner+')'">
-      <h3>新闻资讯</h3>
-      <p>公司最新 行业最热 抓住行业新动态 驱动企业快速发展</p>
-    </div>
-    <!--tab-->
-    <div class="tab-box">
-      <div class="tab">
-        <p :class="type === 1?'on':''" @click="tab(1)">公司动态</p>
-        <p :class="type === 2?'on':''" @click="tab(2)">行业动态</p>
+  <div class="news page" :style="'background-image: url('+bg_img+')'">
+    <div class="bg-mask">
+      <div class="banner" :style="'background-image: url('+banner+')'">
+        <h3>新闻资讯</h3>
+        <p>公司最新 行业最热 抓住行业新动态 驱动企业快速发展</p>
       </div>
-    </div>
+      <!--tab-->
+      <div class="tab-box">
+        <div class="tab">
+          <p :class="type === 1?'on':''" @click="tab(1)">公司动态</p>
+          <p :class="type === 2?'on':''" @click="tab(2)">行业动态</p>
+        </div>
+      </div>
 
-    <!--新闻列表-->
-    <div class="news w-1200">
-      <ul>
-        <li v-for="(item,index) in news_list" :key="index" @click="to_new_detail(item.id)">
-          <div class="no-one" v-if="index>0">
-            <div class="img-box" :style="'background-image: url('+item.pic+')'">
-              <!--<img :src="item.pic"/>-->
+      <!--新闻列表-->
+      <div class="news w-1200">
+        <ul>
+          <li v-for="(item,index) in news_list" :key="index" @click="to_new_detail(item.id)">
+            <div class="no-one" v-if="index>0">
+              <div class="img-box" :style="'background-image: url('+item.pic+')'">
+                <!--<img :src="item.pic"/>-->
+              </div>
+              <div class="new-cont">
+                <h3 class="one-line-ellipsis">{{item.title}}</h3>
+                <p class="two-line-ellipsis">{{item.desc}}</p>
+                <!--<router-link :to="{path:'/newDetail',query:{id:item.id,nav:4,type:type}}">Read More+</router-link>-->
+                <div class="btn-to-detail">Read More+</div>
+              </div>
+              <div class="new-date">
+                <span>{{parseInt(item.create_time.substr(8,2))}}</span>
+                <p>{{item.create_time.substr(0,7)}}</p>
+              </div>
             </div>
-            <div class="new-cont">
-              <h3 class="one-line-ellipsis">{{item.title}}</h3>
-              <p class="two-line-ellipsis">{{item.desc}}</p>
-              <!--<router-link :to="{path:'/newDetail',query:{id:item.id,nav:4,type:type}}">Read More+</router-link>-->
-              <div class="btn-to-detail">Read More+</div>
+            <div class="list-one" v-else>
+              <div class="one-cont">
+                <h3 class="one-line-ellipsis">{{item.title}}</h3>
+                <p class="two-line-ellipsis">{{item.desc}}</p>
+                <span>{{item.create_time}}</span>
+                <!--<router-link :to="{path:'/newDetail',query:{id:item.id,nav:4,type:type}}">Read More+</router-link>-->
+                <div class="btn-to-detail">Read More+</div>
+              </div>
+              <div class="img-box" :style="'background-image: url('+item.pic+')'">
+                <!--<img :src="item.pic"/>-->
+              </div>
             </div>
-            <div class="new-date">
-              <span>{{parseInt(item.create_time.substr(8,2))}}</span>
-              <p>{{item.create_time.substr(0,7)}}</p>
-            </div>
-          </div>
-          <div class="list-one" v-else>
-            <div class="one-cont">
-              <h3 class="one-line-ellipsis">{{item.title}}</h3>
-              <p class="two-line-ellipsis">{{item.desc}}</p>
-              <span>{{item.create_time}}</span>
-              <!--<router-link :to="{path:'/newDetail',query:{id:item.id,nav:4,type:type}}">Read More+</router-link>-->
-              <div class="btn-to-detail">Read More+</div>
-            </div>
-            <div class="img-box" :style="'background-image: url('+item.pic+')'">
-              <!--<img :src="item.pic"/>-->
-            </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
 
-      <div class="page-box" v-if="total>5">
-        <!--<div class="page-box">-->
-        <el-pagination
-                background
-                layout="prev, pager, next"
-                :page-size="5"
-                @current-change="current_change"
-                :total="total">
-        </el-pagination>
+        <div class="page-box" v-if="total>5">
+          <!--<div class="page-box">-->
+          <el-pagination
+                  background
+                  layout="prev, pager, next"
+                  :page-size="5"
+                  @current-change="current_change"
+                  :total="total">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -65,6 +67,7 @@
     data() {
       return {
         banner: this.config.banner,
+        bg_img: this.config.bg_img,
         type: 1,
         page: 1,
 
@@ -172,7 +175,7 @@
 
       ul {
         li {
-          background-color: #ffffff;
+          background-color: #f5f5f5;
           border-radius: 1px;
           margin-top: 24px;
           border: solid 1px #f7f7f7;
@@ -186,6 +189,7 @@
 
           &:hover {
             box-shadow: 0 1px 46px 0 rgba(196, 205, 215, 0.75);
+            background-color: #ffffff;
           }
 
           .no-one {

@@ -1,57 +1,60 @@
 <template>
-  <div class="server-world page">
-    <div class="banner" :style="'background-image: url('+banner+')'">
-      <h3>服务全球</h3>
-      <p>27年毛绒玩具生产经验 朝气蓬勃的员工队伍 精准实现客户需求</p>
-    </div>
+  <div class="server-world page" :style="'background-image: url('+bg_img+')'">
+    <div class="bg-mask">
 
-    <!--面包屑加tab-->
-    <div class="crumb-tab">
-      <div class="w-1200">
-        <div class="crumb">
-          <p>
-            <router-link to="/"> 首页</router-link>
-            >服务全球>{{now_page_text}}
-          </p>
-        </div>
-        <div class="tab">
-          <p :class="internal === 1?'on':''" @click="tab(1)">国内产品</p>
-          <p :class="internal === 2?'on':''" @click="tab(2)">国外产品</p>
+      <div class="banner" :style="'background-image: url('+banner+')'">
+        <h3>服务全球</h3>
+        <p>27年毛绒玩具生产经验 朝气蓬勃的员工队伍 精准实现客户需求</p>
+      </div>
+
+      <!--面包屑加tab-->
+      <div class="crumb-tab">
+        <div class="w-1200">
+          <div class="crumb">
+            <p>
+              <router-link to="/"> 首页</router-link>
+              >服务全球>{{now_page_text}}
+            </p>
+          </div>
+          <div class="tab">
+            <p :class="internal === 1?'on':''" @click="tab(1)">国内产品</p>
+            <p :class="internal === 2?'on':''" @click="tab(2)">国外产品</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!--分类-->
-    <div class="cate-box w-1200">
-      <ul>
-        <li :class="cate_id===0?'on':''" @click="change_cate()">全部产品</li>
-        <li :class="cate_id===item.id?'on':''" v-for="(item,index) in cate_list" :key="'server_date' + index"
-            @click="change_cate(item.id)">
-          {{item.cate_name}}
-        </li>
-      </ul>
-    </div>
+      <!--分类-->
+      <div class="cate-box w-1200">
+        <ul>
+          <li :class="cate_id===0?'on':''" @click="change_cate()">全部产品</li>
+          <li :class="cate_id===item.id?'on':''" v-for="(item,index) in cate_list" :key="'server_date' + index"
+              @click="change_cate(item.id)">
+            {{item.cate_name}}
+          </li>
+        </ul>
+      </div>
 
-    <!--产品列表-->
-    <div class="product-list w-1200" v-loading="loading">
-      <ul v-if="product_list.length">
-        <router-link :to="{name:'productDetail',query:{nav:2,internal:internal,id:item.id}}" tag="li"
-                     v-for="item in product_list"
-                     :key="item.id">
+      <!--产品列表-->
+      <div class="product-list w-1200" v-loading="loading">
+        <ul v-if="product_list.length">
+          <router-link :to="{name:'productDetail',query:{nav:2,internal:internal,id:item.id}}" tag="li"
+                       v-for="item in product_list"
+                       :key="item.id">
 
-          <div class="pic-box" :style="'background-image:url('+item.pic+')'"></div>
-          <p class="one-line-ellipsis">{{item.name}}</p>
-        </router-link>
-      </ul>
-      <div class="nodata" v-else>{{nodata}}</div>
+            <div class="pic-box" :style="'background-image:url('+item.pic+')'"></div>
+            <p class="one-line-ellipsis">{{item.name}}</p>
+          </router-link>
+        </ul>
+        <div class="nodata" v-else>{{nodata}}</div>
 
-      <div class="page-box" v-if="total>16">
-        <el-pagination
-                background
-                layout="prev, pager, next"
-                @current-change="current_change"
-                :total="total">
-        </el-pagination>
+        <div class="page-box" v-if="total>16">
+          <el-pagination
+                  background
+                  layout="prev, pager, next"
+                  @current-change="current_change"
+                  :total="total">
+          </el-pagination>
+        </div>
       </div>
     </div>
   </div>
@@ -62,6 +65,7 @@
     data() {
       return {
         banner: this.config.banner,
+        bg_img: this.config.bg_img,
         internal: 0,
         now_page_text: '',
         page: 1,
@@ -92,7 +96,8 @@
     methods: {
       tab(on) {
         this.internal = on;
-        this.my_load(on, this.cate_id);
+        // this.my_load(on, this.cate_id);
+        this.$router.push({ name: 'center', query: { nav: 2, on: on } });
       },
 
       change_cate(cate_id) {
@@ -153,7 +158,7 @@
 
 <style lang="scss" scoped>
   .server-world {
-    background: #F2F3F5;
+    /*background: #F2F3F5;*/
     /*面包屑加tab样式*/
     .crumb-tab {
       background-color: #ffffff;
@@ -212,7 +217,8 @@
 
     /*分类样式*/
     .cate-box {
-      margin: 24px auto 16px;
+      padding: 24px 0 16px;
+      box-sizing: border-box;
 
       ul {
         display: flex;

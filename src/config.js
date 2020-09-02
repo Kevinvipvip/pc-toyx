@@ -2,7 +2,7 @@ let base = 'https://mp.tjluckytoy.com';
 let aliyun_base = 'https://testoss.psn.asia';
 let nav = [
   {
-    id: 2,
+    id: 1,
     name: '首页',
     url: '/',
   },{
@@ -140,6 +140,7 @@ let config = {
   phone_reg: /0\d{2,3}-\d{7,8}/,
 
   banner: aliyun_base + '/static/banner.png',//多个页面共用的banner图
+  bg_img: aliyun_base + '/static/index-bg.jpg',//多个页面共用的冰山背景图
 
   // 数据内容
   nav: nav,//导航栏数据
