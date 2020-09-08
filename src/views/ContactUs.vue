@@ -10,11 +10,17 @@
       <div class="tab-box">
         <div class="tab">
           <p :class="active === 1?'on':''" @click="tab(1)">联系方式</p>
-          <p :class="active === 2?'on':''" @click="tab(2)">人才招聘</p>
+          <p :class="active === 2?'on':''" @click="tab(2)">关注我们</p>
+          <p :class="active === 3?'on':''" @click="tab(3)">人才招聘</p>
         </div>
       </div>
 
-      <div class="contact-one w-1200" ref="scroll_one">
+      <!--联系方式-->
+      <div class="title w-1200" ref="scroll_one">
+        <div class="enlish-title">CONTACT</div>
+        <p><span>联系方式</span></p>
+      </div>
+      <div class="contact-one w-1200">
         <ul>
           <li>
             <div class="icon-box"><img src="../assets/icon-address.png"/></div>
@@ -39,10 +45,17 @@
           <baidu-map class="baidu-map" :zoom="15" :scroll-wheel-zoom="true" :center="location"
                      @ready="map_init"></baidu-map>
         </div>
+      </div>
 
+
+      <!--关注我们-->
+      <div class="title w-1200" ref="scroll_two">
+        <div class="enlish-title"> FOLLOW</div>
+        <p><span>关注我们</span></p>
+      </div>
+      <div class="contact-two w-1200">
         <div class="focus-us">
           <div class="focus-left">
-            <h3>关注我们</h3>
             <ul>
               <li>
                 <div class="img"><img src="../assets/wx-code.jpg"/></div>
@@ -58,6 +71,35 @@
                       target="_blank">1688商城</a></p>
               </li>
             </ul>
+            <!--业务员-->
+            <div class="salesman">
+              <div class="salesman-item" v-for="item in us.salesman" :key="item.id">
+                <div class="item-cont">
+                  <h3>{{item.name}}</h3>
+                  <p>手机：{{item.tel}}</p>
+                  <p>QQ：{{item.qq}}</p>
+                  <el-tooltip effect="dark" :content="item.email" placement="bottom">
+                    <p class="one-line-ellipsis" :title="item.email">邮箱：{{item.email}}</p>
+                  </el-tooltip>
+                </div>
+              </div>
+              <!--<div class="salesman-item">-->
+              <!--<div class="item-cont">-->
+              <!--<h3>业务员二</h3>-->
+              <!--<p>-->
+              <!--<span>手机：18834406582</span><span>QQ：5858546263</span><span>邮箱：123@193.com</span>-->
+              <!--</p>-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--<div class="salesman-item">-->
+              <!--<div class="item-cont">-->
+              <!--<h3>业务员三</h3>-->
+              <!--<p>-->
+              <!--<span>手机：18834406582</span><span>QQ：5858546263</span><span>邮箱：123@193.com</span>-->
+              <!--</p>-->
+              <!--</div>-->
+              <!--</div>-->
+            </div>
           </div>
           <div class="focus-right">
             <h3>
@@ -76,8 +118,14 @@
           </div>
         </div>
       </div>
-      <div class="contact-two w-1200" ref="scroll_two">
-        <h3>人才招聘</h3>
+
+
+      <!--人才招聘-->
+      <div class="title w-1200" ref="scroll_three">
+        <div class="enlish-title">JOBS</div>
+        <p><span>人才招聘</span></p>
+      </div>
+      <div class="contact-three w-1200">
         <div class="recruit">
           <ul>
             <li>
@@ -175,6 +223,12 @@
             case 2:
               window.scrollTo({
                 top: this.$refs.scroll_two.offsetTop,
+                behavior: "smooth"
+              });
+              break;
+            case 3:
+              window.scrollTo({
+                top: this.$refs.scroll_three.offsetTop,
                 behavior: "smooth"
               });
               break;
@@ -335,6 +389,60 @@
       }
     }
 
+    /*title样式*/
+    .title {
+      margin: 70px auto 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: column;
+
+      .enlish-title {
+        font-size: 32px;
+        color: #333333;
+        margin-bottom: 5px;
+      }
+
+      p {
+        font-size: 32px;
+        color: #333333;
+        font-weight: bold;
+        position: relative;
+        z-index: 3;
+        padding: 6px 24px;
+        border-radius: 10px;
+        border: solid 2px #ffffff;
+        overflow: hidden;
+
+        span {
+          position: relative;
+          z-index: 9;
+        }
+
+        &:before {
+          content: '';
+          width: 50%;
+          height: 100%;
+          background-color: #ffffff;
+          left: 0;
+          top: 0;
+          position: absolute;
+          z-index: 1;
+        }
+
+        &:after {
+          content: '';
+          width: 50%;
+          height: 100%;
+          background-color: transparent;
+          right: 0;
+          top: 0;
+          position: absolute;
+          z-index: 1;
+        }
+      }
+    }
+
     .contact-one {
       margin-top: 90px;
 
@@ -353,13 +461,15 @@
         /*}*/
 
         li {
-          width: 261px;
+          width: 270px;
           height: 120px;
           border: 3px solid #eeeeee;
           display: flex;
           justify-content: center;
           align-items: center;
           position: relative;
+          background-color: #ffffff;
+          border-radius: 6px;
 
           .icon-box {
             position: absolute;
@@ -371,8 +481,10 @@
           }
 
           p {
-            font-size: 14px;
+            font-size: 16px;
             color: #666666;
+            margin: 0 10px;
+            text-align: center;
           }
 
           &:hover {
@@ -396,6 +508,10 @@
         }
       }
 
+    }
+
+    .contact-two {
+
       .focus-us {
         margin-top: 64px;
         height: 516px;
@@ -406,32 +522,17 @@
         .focus-left {
           width: 800px;
           background: url("../assets/contact-us-bg.png") no-repeat;
-          position: relative;
-
-          h3 {
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 30px 26px;
-            font-weight: normal;
-            font-size: 32px;
-            color: #333333;
-            line-height: 28px;
-          }
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+          align-items: center;
 
           ul {
-            width: 100%;
-            height: 100%;
+            width: calc(100% - 170px);
             display: flex;
-            align-items: center;
-            justify-content: space-around;
+            justify-content: space-between;
 
             li {
-              flex-flow: column;
-              height: auto;
-              width: auto;
-              border: none;
-
               .img {
                 width: 183px;
                 height: 183px;
@@ -446,10 +547,67 @@
                 font-size: 14px;
                 color: #666666;
                 margin-top: 18px;
+                text-align: center;
               }
 
               a:hover {
                 color: #50a8ec;
+              }
+            }
+          }
+
+          .salesman {
+            margin-top: 45px;
+            width: calc(100% - 170px);
+            background-color: #ffffff;
+            border-radius: 10px;
+            border: solid 1px #eeeeee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .salesman-item {
+              position: relative;
+              width: 33.3333%;
+              margin: 30px 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              .item-cont {
+                width: calc(100% - 40px);
+
+                h3 {
+                  font-size: 24px;
+                  color: #333333;
+                  font-weight: normal;
+                  margin-bottom: 23px;
+                }
+
+                p {
+                  font-size: 16px;
+                  width: 100%;
+                  margin: 0 auto;
+                  color: #666666;
+                  line-height: 24px;
+
+                  &.one-line-ellipsis {
+                    cursor: pointer;
+                  }
+                }
+              }
+
+              &:after {
+                content: '';
+                position: absolute;
+                right: 0;
+                height: 100%;
+                width: 1px;
+                background-color: #eeeeee;
+              }
+
+              &:last-child:after {
+                display: none;
               }
             }
           }
@@ -562,16 +720,16 @@
       }
     }
 
-    .contact-two {
-      margin-top: 80px;
+    .contact-three {
+      margin-top: 60px;
       margin-bottom: 80px;
 
-      h3 {
-        text-align: center;
-        font-size: 32px;
-        color: #333333;
-        font-weight: normal;
-      }
+      /*h3 {*/
+      /*text-align: center;*/
+      /*font-size: 32px;*/
+      /*color: #333333;*/
+      /*font-weight: normal;*/
+      /*}*/
 
       .recruit {
         width: 100%;

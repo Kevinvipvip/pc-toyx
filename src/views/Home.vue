@@ -52,35 +52,8 @@
         </div>
 
       </div>
-      <!--研发中心-->
-      <div class="home-mask m2">
-        <div class="rank">
-          <div class="img-box"><img :src="R_D_flag?R_D_img[0]:R_D_img[1]"/></div>
-          <div class="ice-cake" :style="'background-image: url('+ice_cake_right+')'"></div>
-        </div>
-        <div class="rank2 w-1200">
-          <h4>R&D</h4>
-          <h4>研发中心</h4>
-          <p>
-            同缘兴不断追寻新的发展之路，在未来不仅是毛绒玩具，而是毛绒玩具加智能，毛绒玩具加工业等。向时代靠拢，与新技术融合，朝极致进发。目前的研发中心拥有多名丰富经验的研发人员，通过新创意、新技术提升现有产品的质量、属性以及传播性。</p>
-          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
-        </div>
-      </div>
-      <!--孵化中心-->
-      <div class="home-mask m3">
-        <div class="rank">
-          <div class="ice-cake" :style="'background-image: url('+ice_cake_left+')'"></div>
-          <div class="img-box"><img :src="incubation_flag?incubation_img[0]:incubation_img[1]"/></div>
-        </div>
-        <div class="rank2 w-1200">
-          <h4>INCUBATION</h4>
-          <h4>孵化中心</h4>
-          <p>为不同的元素重构，把握市场需求以及产品定位，孵化有属性有内涵的毛绒玩具，将玩具多样化、品牌化且具有传播性的事业。目前我们的孵化基地已成功产出上百种毛绒玩具并推动销售额的大幅度提升。</p>
-          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
-        </div>
-      </div>
       <!--定制服务-->
-      <div class="home-mask m4">
+      <div class="home-mask m2">
         <div class="rank">
           <div class="img-box"><img :src="service_flag?service_img[0]:service_img[1]"/></div>
           <div class="ice-cake" :style="'background-image: url('+ice_cake_right+')'"></div>
@@ -93,6 +66,34 @@
           <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">来图免费打样</router-link>
         </div>
       </div>
+      <!--研发中心-->
+      <div class="home-mask m3">
+        <div class="rank">
+          <div class="ice-cake" :style="'background-image: url('+ice_cake_left+')'"></div>
+          <div class="img-box"><img :src="R_D_flag?R_D_img[0]:R_D_img[1]"/></div>
+        </div>
+        <div class="rank2 w-1200">
+          <h4>R&D</h4>
+          <h4>研发中心</h4>
+          <p>
+            同缘兴不断追寻新的发展之路，在未来不仅是毛绒玩具，而是毛绒玩具加智能，毛绒玩具加工业等。向时代靠拢，与新技术融合，朝极致进发。目前的研发中心拥有多名丰富经验的研发人员，通过新创意、新技术提升现有产品的质量、属性以及传播性。</p>
+          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
+        </div>
+      </div>
+      <!--孵化中心-->
+      <div class="home-mask m4">
+        <div class="rank">
+          <div class="img-box"><img :src="incubation_flag?incubation_img[0]:incubation_img[1]"/></div>
+          <div class="ice-cake" :style="'background-image: url('+ice_cake_right+')'"></div>
+        </div>
+        <div class="rank2 w-1200">
+          <h4>INCUBATION</h4>
+          <h4>孵化中心</h4>
+          <p>为不同的元素重构，把握市场需求以及产品定位，孵化有属性有内涵的毛绒玩具，将玩具多样化、品牌化且具有传播性的事业。目前我们的孵化基地已成功产出上百种毛绒玩具并推动销售额的大幅度提升。</p>
+          <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
+        </div>
+      </div>
+
       <!--合作伙伴-->
       <div class="home-mask m5">
         <div class="rank">

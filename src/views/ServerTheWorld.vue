@@ -19,41 +19,95 @@
           <div class="tab">
             <p :class="internal === 1?'on':''" @click="tab(1)">国内产品</p>
             <p :class="internal === 2?'on':''" @click="tab(2)">国外产品</p>
+            <p :class="internal === 3?'on':''" @click="tab(3)">玩具定制</p>
+          </div>
+        </div>
+      </div>
+      <!--国内外产品展示-->
+      <div class="internal" v-if="internal !== 3">
+
+        <!--分类-->
+        <div class="cate-box w-1200">
+          <ul>
+            <li :class="cate_id===0?'on':''" @click="change_cate()">全部产品</li>
+            <li :class="cate_id===item.id?'on':''" v-for="(item,index) in cate_list" :key="'server_date' + index"
+                @click="change_cate(item.id)">
+              {{item.cate_name}}
+            </li>
+          </ul>
+        </div>
+
+        <!--产品列表-->
+        <div class="product-list w-1200" v-loading="loading">
+          <ul v-if="product_list.length">
+            <router-link :to="{name:'productDetail',query:{nav:2,internal:internal,id:item.id}}" tag="li"
+                         v-for="item in product_list"
+                         :key="item.id">
+
+              <div class="pic-box" :style="'background-image:url('+item.pic+')'"></div>
+              <p class="one-line-ellipsis">{{item.name}}</p>
+            </router-link>
+          </ul>
+          <div class="nodata" v-else>{{nodata}}</div>
+
+          <div class="page-box" v-if="total>16">
+            <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    @current-change="current_change"
+                    :total="total">
+            </el-pagination>
           </div>
         </div>
       </div>
 
-      <!--分类-->
-      <div class="cate-box w-1200">
-        <ul>
-          <li :class="cate_id===0?'on':''" @click="change_cate()">全部产品</li>
-          <li :class="cate_id===item.id?'on':''" v-for="(item,index) in cate_list" :key="'server_date' + index"
-              @click="change_cate(item.id)">
-            {{item.cate_name}}
-          </li>
-        </ul>
-      </div>
+      <!--玩具定制-->
+      <div class="customized" v-else>
+        <div class="customized-banner w-1200">
+          <img :src="customized_banner"/>
+        </div>
+        <!--定制产品-->
+        <div class="title w-1200" ref="scroll_three">
+          <div class="enlish-title">PRODUCT</div>
+          <p><span>定制产品</span></p>
+        </div>
+        <div class="customized-one">
+          <ul>
+            <li v-for="item in customized" :key="item.id">
+              <p>{{item.title}}</p>
+            </li>
+          </ul>
+        </div>
 
-      <!--产品列表-->
-      <div class="product-list w-1200" v-loading="loading">
-        <ul v-if="product_list.length">
-          <router-link :to="{name:'productDetail',query:{nav:2,internal:internal,id:item.id}}" tag="li"
-                       v-for="item in product_list"
-                       :key="item.id">
+        <!--定制展示-->
+        <div class="title w-1200" ref="scroll_three">
+          <div class="enlish-title">PRODUCT</div>
+          <p><span>定制展示</span></p>
+        </div>
+        <div class="customized-two w-1200">
+          <div class="img-center"><img src="../assets/customized/icon-dingzhizhanshi.png"/></div>
+          <div class="two-item">
+            <div class="img"><img :src="customized_before"/></div>
+            <p>设计图</p>
+          </div>
+          <div class="two-item">
+            <div class="img"><img :src="customized_after"/></div>
+            <p>成品图</p>
+          </div>
+        </div>
 
-            <div class="pic-box" :style="'background-image:url('+item.pic+')'"></div>
-            <p class="one-line-ellipsis">{{item.name}}</p>
-          </router-link>
-        </ul>
-        <div class="nodata" v-else>{{nodata}}</div>
-
-        <div class="page-box" v-if="total>16">
-          <el-pagination
-                  background
-                  layout="prev, pager, next"
-                  @current-change="current_change"
-                  :total="total">
-          </el-pagination>
+        <!--定制流程-->
+        <div class="title w-1200" ref="scroll_three">
+          <div class="enlish-title">PRODUCT</div>
+          <p><span>定制流程</span></p>
+        </div>
+        <div class="customized-three w-1200">
+          <ul>
+            <li v-for="item in customized_liucheng" :key="item.id">
+              <div class="liucheng-img"><img :src="item.pic"/></div>
+              <p>{{item.name}}</p>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -66,6 +120,10 @@
       return {
         banner: this.config.banner,
         bg_img: this.config.bg_img,
+        customized_banner: this.config.aliyun + 'static/customized-banner.png',//玩具定制banner图
+        customized_after: this.config.aliyun + 'static/customized-after.png',//玩具定制..定制前展示图
+        customized_before: this.config.aliyun + 'static/customized-before.png',//玩具定制..成品图
+
         internal: 0,
         now_page_text: '',
         page: 1,
@@ -77,8 +135,10 @@
         product_list: [],//产品列表数据
 
         loading: true,
+        nodata: '',
 
-        nodata: ''
+        customized: this.config.customized,
+        customized_liucheng: this.config.customized_liucheng
       };
     },
     beforeRouteUpdate(to) {
@@ -97,7 +157,7 @@
       tab(on) {
         this.internal = on;
         // this.my_load(on, this.cate_id);
-        this.$router.push({ name: 'center', query: { nav: 2, on: on } });
+        this.$router.replace({ name: 'center', query: { nav: 2, on: on } });
       },
 
       change_cate(cate_id) {
@@ -126,6 +186,13 @@
             this.cate_list = [];
             this.cate_id = 0;
             this.getProductList();
+            break;
+          case 3:
+            this.now_page_text = '玩具定制';
+            // this.page = 1;
+            // this.cate_list = [];
+            // this.cate_id = 0;
+            // this.getProductList();
             break;
         }
       },
@@ -215,94 +282,281 @@
       }
     }
 
-    /*分类样式*/
-    .cate-box {
-      padding: 24px 0 16px;
-      box-sizing: border-box;
+    /*国内外产品展示样式*/
+    .internal {
+      /*分类样式*/
+      .cate-box {
+        padding: 24px 0 16px;
+        box-sizing: border-box;
 
-      ul {
-        display: flex;
-        flex-wrap: wrap;
+        ul {
+          display: flex;
+          flex-wrap: wrap;
 
-        li {
-          width: 94px;
-          height: 40px;
-          border-radius: 10px;
-          background-color: #f7f7f7;
-          color: #999999;
-          font-size: 16px;
+          li {
+            width: 94px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #f7f7f7;
+            color: #999999;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 24px;
+            margin-bottom: 24px;
+            cursor: pointer;
+
+            &.on, &:hover {
+              background-color: #50a8ec;
+              color: #ffffff;
+            }
+          }
+        }
+      }
+
+      /*产品列表样式*/
+      .product-list {
+        padding-bottom: 80px;
+
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+
+          li {
+            cursor: pointer;
+            width: 260px;
+            margin-right: 53px;
+            margin-top: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+
+            .pic-box {
+              width: 100%;
+              padding-bottom: 100%;
+              height: 0;
+              overflow: hidden;
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+
+            &:hover {
+              .pic-box {
+                transform: scale(1.1);
+                transition: 0.5s;
+              }
+            }
+
+            p {
+              margin: 50px 15px 27px;
+              text-align: center;
+              font-size: 14px;
+              color: #666666;
+            }
+
+            &:nth-child(4n) {
+              margin-right: 0;
+            }
+
+            &:nth-child(-n+4) {
+              margin-top: 0;
+            }
+          }
+        }
+
+        .page-box {
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-right: 24px;
-          margin-bottom: 24px;
-          cursor: pointer;
-
-          &.on, &:hover {
-            background-color: #50a8ec;
-            color: #ffffff;
-          }
+          margin-top: 40px;
         }
       }
     }
 
-    /*产品列表样式*/
-    .product-list {
-      padding-bottom: 80px;
+    /*玩具定制样式*/
+    .customized {
+      margin-bottom: 100px;
 
-      ul {
+      .customized-banner {
+        margin-top: 24px;
+      }
+
+      /*title样式*/
+      .title {
+        margin: 80px auto 50px;
         display: flex;
-        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
 
-        li {
-          cursor: pointer;
-          width: 260px;
-          margin-right: 53px;
-          margin-top: 30px;
-          background-color: #ffffff;
+        .enlish-title {
+          font-size: 32px;
+          color: #333333;
+          margin-bottom: 5px;
+        }
+
+        p {
+          font-size: 32px;
+          color: #333333;
+          font-weight: bold;
+          position: relative;
+          z-index: 3;
+          padding: 6px 26px;
           border-radius: 10px;
+          border: solid 2px #ffffff;
           overflow: hidden;
 
-          .pic-box {
-            width: 100%;
-            padding-bottom: 100%;
-            height: 0;
-            overflow: hidden;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
+          span {
+            position: relative;
+            z-index: 9;
           }
 
-          &:hover {
-            .pic-box {
-              transform: scale(1.1);
-              transition: 0.5s;
+          &:before {
+            content: '';
+            width: 50%;
+            height: 100%;
+            background-color: #ffffff;
+            left: 0;
+            top: 0;
+            position: absolute;
+            z-index: 1;
+          }
+
+          &:after {
+            content: '';
+            width: 50%;
+            height: 100%;
+            background-color: transparent;
+            right: 0;
+            top: 0;
+            position: absolute;
+            z-index: 1;
+          }
+        }
+      }
+
+      /*定制产品样式*/
+      .customized-one {
+        padding-bottom: 80px;
+
+        ul {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          margin: 0 50px;
+
+          li {
+            background: url("../assets/customized/customized-bg.png") center 100% no-repeat;
+            margin: 0 10px;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            p {
+              margin: 0 20px 20px;
+              text-align: center;
+              color: #50a8ec;
+              font-size: 18px;
+            }
+
+            &:nth-child(odd) {
+              transform: translateY(80px);
+            }
+          }
+        }
+      }
+
+      /*定制展示样式*/
+      .customized-two {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+
+        .img-center {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          z-index: 3;
+          transform: translate(-50%, -50%);
+        }
+
+        .two-item {
+          width: calc(50% - 20px);
+          height: 364px;
+          background-color: #ffffff;
+          border-radius: 10px;
+          border: solid 1px #ededed;
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+          align-items: center;
+
+          .img {
+            margin-bottom: 23px;
+            height: 250px;
+
+            img {
+              height: 100%;
+              width: auto;
             }
           }
 
           p {
-            margin: 50px 15px 27px;
-            text-align: center;
-            font-size: 14px;
+            font-size: 18px;
             color: #666666;
-          }
-
-          &:nth-child(4n) {
-            margin-right: 0;
-          }
-
-          &:nth-child(-n+4) {
-            margin-top: 0;
+            border: solid 1px #bfbfbf;
+            padding: 8px 23px;
           }
         }
       }
 
-      .page-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 40px;
+      /*定制流程样式*/
+      .customized-three {
+        ul {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          li {
+            /*width: 12.5%;*/
+            position: relative;
+
+            &:after {
+              content: '';
+              position: absolute;
+              left: 100%;
+              top: 49.5px;
+              height: 3px;
+              width: 100%;
+              background-color: #39a8ff;
+            }
+
+            &:last-child:after {
+              display: none;
+            }
+
+            .liucheng-img {
+              width: 99px;
+              height: 99px;
+            }
+
+            p {
+              text-align: center;
+              font-size: 20px;
+              color: #333333;
+              margin-top: 30px;
+            }
+          }
+        }
       }
     }
   }
+
 </style>

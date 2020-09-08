@@ -1,11 +1,11 @@
 let base = 'https://mp.tjluckytoy.com';
-let aliyun_base = 'https://testoss.psn.asia';
+let aliyun_base = 'https://shanhaitest.oss-cn-beijing.aliyuncs.com';
 let nav = [
   {
     id: 1,
     name: '首页',
     url: '/',
-  },{
+  }, {
     id: 2,
     name: '服务全球',
     url: '/server',
@@ -17,6 +17,10 @@ let nav = [
       name: '国外产品',
       url: '/server',
       index: 2
+    }, {
+      name: '玩具定制',
+      url: '/server',
+      index: 3
     }]
   }, {
     id: 3,
@@ -31,21 +35,13 @@ let nav = [
       url: '/about',
       index: 2
     }, {
-      name: '企业文化',
+      name: '企业团队',
       url: '/about',
       index: 3
     }, {
       name: '荣誉资质',
       url: '/about',
       index: 4
-    }, {
-      name: '企业团队',
-      url: '/about',
-      index: 5
-    }, {
-      name: '社会责任',
-      url: '/about',
-      index: 6
     }]
   }, {
     id: 4,
@@ -69,9 +65,13 @@ let nav = [
       url: '/contact',
       index: 1
     }, {
-      name: '人才招聘',
+      name: '关注我们',
       url: '/contact',
       index: 2
+    }, {
+      name: '人才招聘',
+      url: '/contact',
+      index: 3
     }]
   }
 ];
@@ -120,17 +120,126 @@ let history = [
     event: '引进大型智能裁床设备，应邀加入中国玩具协会成为5星级供应商；筹备蓟州开发区分厂建设，目前厂房面积10000㎡、仓储面积15000㎡，企业年产值700万美金。活跃在国内多个知名展会，与欧洲影响力最大的PMS、SIX FLAGS、IDEAL TOYS DIRECT、FIESTA CONCESSION CORP、SUPREMER等多家公司达成合作。'
   }
 ];
-let cc_data = {
-  youshi_img: aliyun_base + '/static/image-cc-youshi.jpg',
-  youshi_title: '我们的优势',
-  youshi_cont: '27年毛绒玩具生产经验  朝气蓬勃的员工队伍  完善精干的管理体系',
-  yuanze_img: aliyun_base + '/static/image-cc-yuanze.jpg',
-  yuanze_title: '我们的原则',
-  yuanze_cont: '质量精良  客户至上  诚实守信',
-  mubiao_img: aliyun_base + '/static/image-cc-mubiao.jpg',
-  mubiao_title: '我们的目标',
-  mubiao_cont: '对外成就客户  对内成就员工  真诚回馈社会  共同实现梦想',
+let hq_data = {
+  honor: [{
+    pic: aliyun_base + '/static/hq-honor1.png',
+    title: '国际玩具工业理事会资质（ICTI）',
+    name: 'on'
+  }, {
+    title: '工业美术学院技能实训基地',
+    pic: aliyun_base + '/static/hq-honor2.png',
+    name: 'next1'
+  }, {
+    title: '先进单位',
+    pic: aliyun_base + '/static/hq-honor3.png',
+    name: 'next2'
+  }, {
+    title: '中国玩具协会会员单位',
+    pic: aliyun_base + '/static/hq-honor4.png',
+    name: 'prev2'
+  }, {
+    title: '天津市文化产业示范基地',
+    pic: aliyun_base + '/static/hq-honor5.png',
+    name: 'prev1'
+  }],
+
+  zizhi: [{
+    pic: aliyun_base + '/static/hq-zizhi1.png',
+    title: 'GSV反恐'
+  }, {
+    title: '营业执照',
+    pic: aliyun_base + '/static/hq-zizhi2.png'
+  }, {
+    title: '实用新型专利证书',
+    pic: aliyun_base + '/static/hq-zizhi3.png'
+  }, {
+    title: '独角兽商标注册证',
+    pic: aliyun_base + '/static/hq-zizhi4.png'
+  }, {
+    title: '同缘兴商标注册证',
+    pic: aliyun_base + '/static/hq-zizhi5.png'
+  }, {
+    title: '充棉机PLC控制系统',
+    pic: aliyun_base + '/static/hq-zizhi6.png'
+  }, {
+    title: '丝网印刷制版系统',
+    pic: aliyun_base + '/static/hq-zizhi7.png'
+  }, {
+    title: '激光裁剪定位控制系统',
+    pic: aliyun_base + '/static/hq-zizhi8.png'
+  }]
 };
+let customized = [
+  {
+    id: 1,
+    title: '企业吉祥物'
+  }, {
+    id: 2,
+    title: '毛绒玩偶'
+  }, {
+    id: 3,
+    title: '赛事活动吉祥物'
+  }, {
+    id: 4,
+    title: '毛绒衍生品'
+  }, {
+    id: 5,
+    title: '特许纪念品'
+  }, {
+    id: 6,
+    title: '人偶'
+  }, {
+    id: 7,
+    title: '抱枕颈枕'
+  }, {
+    id: 8,
+    title: '钥匙链'
+  }, {
+    id: 9,
+    title: '毛绒背包'
+  }, {
+    id: 10,
+    title: '毛绒挂饰'
+  }, {
+    id: 11,
+    title: '其他'
+  }
+];
+let customized_liucheng = [
+  {
+    id: 1,
+    name: '选品',
+    pic: aliyun_base + '/static/icon-xuanpin.png'
+  }, {
+    id: 2,
+    name: '设计',
+    pic: aliyun_base + '/static/icon-sheji.png'
+  }, {
+    id: 3,
+    name: '打样',
+    pic: aliyun_base + '/static/icon-dayang.png'
+  }, {
+    id: 4,
+    name: '合同',
+    pic: aliyun_base + '/static/icon-hetong.png'
+  }, {
+    id: 5,
+    name: '生产',
+    pic: aliyun_base + '/static/icon-shengchan.png'
+  }, {
+    id: 6,
+    name: '配送',
+    pic: aliyun_base + '/static/icon-peisong.png'
+  }, {
+    id: 7,
+    name: '签收',
+    pic: aliyun_base + '/static/icon-qianshou.png'
+  }, {
+    id: 8,
+    name: '售后',
+    pic: aliyun_base + '/static/icon-shouhou.png'
+  }
+];
 
 let config = {
   url: base + '/',
@@ -145,7 +254,9 @@ let config = {
   // 数据内容
   nav: nav,//导航栏数据
   history: history,//发展历程数据
-  cc_data,//企业文化数据
+  hq_data,//荣誉资质数据
+  customized,//服务全球定制产品数据
+  customized_liucheng,//服务全球定制流程数据
 };
 
 export default config;

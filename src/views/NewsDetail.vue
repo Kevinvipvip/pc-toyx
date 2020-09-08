@@ -22,15 +22,24 @@
           </div>
           <div class="rich-text" v-html="detail.content"></div>
 
-          <!--<div class="btn-box" v-if="new_list.length>0">-->
+          <div class="btn-box" v-if="new_list.length>0">
+            <div class="p-box">
+              <p v-if="prev_i === new_list.length-1" @click="prev_pages(new_list[prev_i].id)">
+                上一篇：没有上一篇了</p>
+              <p v-else @click="prev_pages(new_list[prev_i].id)">上一篇：{{new_list[prev_i].title}}</p>
 
-          <!--<p v-if="prev_i === new_list.length-1" @click="prev_pages(new_list[prev_i].id)">-->
-          <!--上一篇：没有上一篇了</p>-->
-          <!--<p v-else @click="prev_pages(new_list[prev_i].id)">上一篇：{{new_list[prev_i].title}}</p>-->
-
-          <!--<p v-if="next_i===0" @click="next_pages(new_list[next_i].id)">下一篇：没有下一篇了</p>-->
-          <!--<p v-else @click="next_pages(new_list[next_i].id)">下一篇：{{new_list[next_i].title}}</p>-->
-          <!--</div>-->
+              <p v-if="next_i===0" @click="next_pages(new_list[next_i].id)">下一篇：没有下一篇了</p>
+              <p v-else @click="next_pages(new_list[next_i].id)">下一篇：{{new_list[next_i].title}}</p>
+            </div>
+            <div class="share">
+              <p><span>可分享到</span><span>FEN XIANG DAO</span></p>
+              <p @click="share_wb" class="img"><img :src="weibo"/></p>
+              <p class="img share-wx">
+                <img :src="weCate"/>
+                <span><img :src="share_code_url"/></span>
+              </p>
+            </div>
+          </div>
           <!--<div class="extended-reading" v-if="read_arr.length>0">-->
           <!--<div class="title">-->
           <!--<p>延展阅读</p>-->
@@ -43,14 +52,7 @@
           <!--</p>-->
           <!--</div>-->
           <!--</div>-->
-          <!--<div class="share">-->
-          <!--<p><span>可分享到</span><span>FEN XIANG DAO</span></p>-->
-          <!--<p @click="share_wb" class="img"><img :src="weibo"/></p>-->
-          <!--<p class="img share-wx">-->
-          <!--<img :src="weCate"/>-->
-          <!--<span><img :src="'https://tieta.h5.wcip.net/api/api/qrcode?nav=37&type=1&id='+id"/></span>-->
-          <!--</p>-->
-          <!--</div>-->
+
         </div>
         <div class="news-list">
           <ul>
@@ -73,8 +75,8 @@
 </template>
 
 <script>
-  // import weCate from '../assets/wx-icon.png'
-  // import weibo from '../assets/wb-icon.png'
+  import weCate from '../assets/wx-icon.png'
+  import weibo from '../assets/wb-icon.png'
 
   export default {
     name: "NewsDetail",
@@ -85,15 +87,16 @@
         type: 1,//1代表公司，2代表行业
         detail: {},
         new_list: [],
-        // prev_i: 0,
-        // next_i: 2,
+        prev_i: 0,
+        next_i: 2,
 
         // 延展阅读
         read_arr: [],
 
-        // // 分享图标
-        // weibo: weibo,
-        // weCate: weCate
+        // 分享图标
+        weibo: weibo,
+        weCate: weCate,
+        share_code_url: ''
       }
     },
     // 跳转本页是参数变化后重新调取商品详情数据
@@ -105,7 +108,6 @@
     },
     created() {
       this.type = parseInt(this.$route.query.on);
-      console.log(this.type);
       this.id = parseInt(this.$route.query.id);
       this.getNewsDetail();
       // this.getNewsList();
@@ -118,46 +120,44 @@
     },
     methods: {
       // // 上一篇新闻
-      // prev_pages(id) {
-      //   this.id = id;
-      //   if (this.prev_i !== this.new_list.length - 1) {
-      //     this.$router.replace({
-      //       name: 'newdetail',
-      //       query: {
-      //         // nav: 4,
-      //         id: id,
-      //         url: this.return_url,
-      //         name: this.return_text
-      //       }
-      //     });
-      //   } else {
-      //     this.$alert('没有上一篇了')
-      //   }
-      // },
+      prev_pages(id) {
+        this.id = id;
+        if (this.prev_i !== this.new_list.length - 1) {
+          this.$router.replace({
+            name: 'newDetail',
+            query: {
+              nav: 4,
+              id: id,
+              on: this.type
+            }
+          });
+        } else {
+          this.$alert('没有上一篇了')
+        }
+      },
       // // 下一篇新闻
-      // next_pages(id) {
-      //   this.id = id;
-      //   if (this.next_i !== 0) {
-      //     this.$router.replace({
-      //       name: 'newdetail',
-      //       query: {
-      //         // nav: 4,
-      //         id: id,
-      //         url: this.return_url,
-      //         name: this.return_text
-      //       }
-      //     });
-      //   } else {
-      //     this.$alert('没有下一篇了')
-      //   }
-      // },
+      next_pages(id) {
+        this.id = id;
+        if (this.next_i !== 0) {
+          this.$router.replace({
+            name: 'newDetail',
+            query: {
+              nav: 4,
+              id: id,
+              on: this.type
+            }
+          });
+        } else {
+          this.$alert('没有下一篇了')
+        }
+      },
 
       // 点击分享到微博
-      // share_wb() {
-      //   // console.log('进来了');
-      //   var sharesinastring = 'http://v.t.sina.com.cn/share/share.php?title=' + this.detail.title + '&url=' + window.location.href + '&content=utf-8&sourceUrl=' + this.detail.desc + '&pic=' + this.detail.pic;
-      //   window.open(sharesinastring);
-      // },
+      share_wb() {
+        // console.log('进来了');
+        var sharesinastring = 'http://v.t.sina.com.cn/share/share.php?title=' + this.detail.title + '&url=' + window.location.href + '&content=utf-8&sourceUrl=' + this.detail.desc + '&pic=' + this.detail.pic;
+        window.open(sharesinastring);
+      },
 
       look_detail(id) {
         this.id = id;
@@ -188,6 +188,22 @@
         };
         this.utils.ajax(this, 'zh.index/newsList', post).then(res => {
           this.new_list = res.list;
+        }).then(() => {
+          let obj = this.$refs.clickItem;
+          for (let i = 0; i < obj.length; i++) {
+            if (obj[i].className === 'on') {
+              if ((i + 1) === obj.length) {
+                this.prev_i = i - 1;
+                this.next_i = 0;
+              } else if (i === 0) {
+                this.prev_i = obj.length - 1;
+                this.next_i = i + 1;
+              } else {
+                this.prev_i = i - 1;
+                this.next_i = i + 1;
+              }
+            }
+          }
         })
       },
       getNewsDetail() {
@@ -200,6 +216,9 @@
           this.detail = res;
         }).then(() => {
           this.getNewsList();
+
+          let url = 'http://www.tjluckytoy.com/#/newdetail?id=' + this.id;
+          this.share_code_url = this.config.api + 'zh.index/qrcode?url=' + encodeURIComponent(url);
         });
       }
     }
@@ -283,7 +302,7 @@
           }
 
           .rich-text {
-            width: 70%;
+            width: 80%;
             margin: 0 auto;
             line-height: 27px;
             font-size: 18px;
@@ -291,37 +310,98 @@
 
             /deep/ img {
               max-width: 100%;
+              height: auto;
             }
           }
 
-          /*.btn-box {*/
-          /*width: 70%;*/
-          /*margin: 15px auto;*/
-          /*display: flex;*/
-          /*justify-content: space-between;*/
-          /*align-items: center;*/
-          /*height: 45px;*/
+          .btn-box {
+            padding-top: 30px;
+            background-color: rgba(75, 140, 213, 0.1);
 
-          /*p {*/
-          /*font-weight: bold;*/
-          /*color: #999;*/
-          /*text-align: right;*/
-          /*cursor: pointer;*/
-          /*font-size: 16px;*/
-          /*width: 40%;*/
-          /*text-overflow: ellipsis;*/
-          /*overflow: hidden;*/
-          /*white-space: nowrap;*/
-          /*}*/
+            .p-box {
+              height: 45px;
+              justify-content: space-between;
+              align-items: center;
+              display: flex;
+              padding: 15px 0;
+              margin: 0 auto;
 
-          /*p:first-child {*/
-          /*text-align: left;*/
-          /*}*/
+              p {
+                font-weight: bold;
+                color: #999;
+                text-align: right;
+                cursor: pointer;
+                font-size: 16px;
+                width: 35%;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              }
 
-          /*p:hover {*/
-          /*color: #ff4c4c;*/
-          /*}*/
-          /*}*/
+              p:first-child {
+                text-align: left;
+              }
+
+              p:hover {
+                color: #50a8ec;
+              }
+            }
+
+            .share {
+              margin-top: 30px;
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+
+              p {
+                font-size: 12px;
+                color: #000000;
+                opacity: 0.4;
+                display: flex;
+                justify-content: center;
+                flex-flow: column;
+                margin-right: 30px;
+
+                span:first-child {
+                  font-size: 18px;
+                  color: #000000;
+                  opacity: 0.9;
+                }
+              }
+
+              .img {
+                cursor: pointer;
+                width: 41px;
+                height: 41px;
+                opacity: 1;
+                margin-right: 20px;
+
+                img {
+                  width: 100%;
+                  height: 100%;
+                  display: block;
+                }
+              }
+
+              .share-wx {
+                position: relative;
+
+                span {
+                  display: none;
+                  position: absolute;
+                  bottom: 41px;
+                  left: 0;
+                  transition: 2s;
+                  width: 200px;
+                  height: 200px;
+                }
+              }
+
+              .share-wx:hover span {
+                display: block;
+              }
+            }
+          }
 
           /*.extended-reading {*/
           /*margin: 44px auto 53px;*/
@@ -363,62 +443,6 @@
           /*width: 40%;*/
           /*}*/
           /*}*/
-          /*}*/
-          /*}*/
-
-          /*.share {*/
-          /*width: 70%;*/
-          /*margin: 0 auto;*/
-          /*display: flex;*/
-          /*justify-content: flex-start;*/
-          /*align-items: center;*/
-
-          /*p {*/
-          /*font-size: 12px;*/
-          /*color: #000000;*/
-          /*opacity: 0.4;*/
-          /*display: flex;*/
-          /*justify-content: center;*/
-          /*flex-flow: column;*/
-          /*margin-right: 30px;*/
-
-          /*span:first-child {*/
-          /*font-size: 18px;*/
-          /*color: #000000;*/
-          /*opacity: 0.9;*/
-          /*}*/
-          /*}*/
-
-          /*.img {*/
-          /*cursor: pointer;*/
-          /*width: 41px;*/
-          /*height: 41px;*/
-          /*opacity: 1;*/
-          /*margin-right: 20px;*/
-
-          /*img {*/
-          /*width: 100%;*/
-          /*height: 100%;*/
-          /*display: block;*/
-          /*}*/
-          /*}*/
-
-          /*.share-wx {*/
-          /*position: relative;*/
-
-          /*span {*/
-          /*display: none;*/
-          /*position: absolute;*/
-          /*bottom: 41px;*/
-          /*left: 0;*/
-          /*transition: 2s;*/
-          /*width: 200px;*/
-          /*height: 200px;*/
-          /*}*/
-          /*}*/
-
-          /*.share-wx:hover span {*/
-          /*display: block;*/
           /*}*/
           /*}*/
         }
