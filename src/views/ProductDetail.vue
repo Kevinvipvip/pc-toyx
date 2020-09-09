@@ -44,8 +44,7 @@
             <p><span>材质：{{detail.caizhi}}</span><span>毛绒分类：{{detail.cate_name}}</span></p>
             <p><span>大小：{{detail.size}}</span><span>颜色：{{detail.color}}</span></p>
             <div class="btn-1688-buy">
-              <a href="https://tongyuanxingtoy.1688.com?spm=a2615.2177701.autotrace-shopSigns.2.134e1001sVuPec"
-                 target="_blank">去商城购买</a></div>
+              <a :href="detail.alibaba_url" target="_blank">去商城批发</a></div>
             <div class="other-buy">
               <div class="other mp-buy">
                 <el-tooltip placement="bottom">
@@ -398,6 +397,7 @@
             border-radius: 10px;
 
             a {
+              cursor: pointer;
               display: flex;
               justify-content: center;
               align-items: center;

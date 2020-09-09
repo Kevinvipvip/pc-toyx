@@ -516,6 +516,10 @@
             align-items: center;
           }
 
+          .swiper-button-next, .swiper-button-prev, .swiper-button-white {
+            outline: none !important;
+          }
+
           .swiper-cp {
             flex: 1;
             margin: 0 10px;
