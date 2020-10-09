@@ -64,7 +64,7 @@
       <!--玩具定制-->
       <div class="customized" v-else>
         <div class="customized-banner w-1200">
-          <img :src="customized_banner"/>
+          <img :src="customized_imgs.banner"/>
         </div>
         <!--定制产品-->
         <div class="title w-1200" ref="scroll_three">
@@ -74,7 +74,9 @@
         <div class="customized-one">
           <ul>
             <li v-for="item in customized" :key="item.id">
-              <p>{{item.title}}</p>
+              <div class="p-box">
+                <p>{{item.title}}</p>
+              </div>
             </li>
           </ul>
         </div>
@@ -85,14 +87,22 @@
           <p><span>定制展示</span></p>
         </div>
         <div class="customized-two w-1200">
-          <div class="img-center"><img src="../assets/customized/icon-dingzhizhanshi.png"/></div>
+          <!--<div class="img-center"><img src="../assets/customized/icon-dingzhizhanshi.png"/></div>-->
           <div class="two-item">
-            <div class="img"><img :src="customized_before"/></div>
-            <p>设计图</p>
+            <div class="img"><img :src="customized_imgs.img1"/></div>
+            <!--<p>设计图</p>-->
           </div>
           <div class="two-item">
-            <div class="img"><img :src="customized_after"/></div>
-            <p>成品图</p>
+            <div class="img"><img :src="customized_imgs.img2"/></div>
+            <!--<p>成品图</p>-->
+          </div>
+          <div class="two-item">
+            <div class="img"><img :src="customized_imgs.img3"/></div>
+            <!--<p>成品图</p>-->
+          </div>
+          <div class="two-item">
+            <div class="img"><img :src="customized_imgs.img4"/></div>
+            <!--<p>成品图</p>-->
           </div>
         </div>
 
@@ -120,9 +130,13 @@
       return {
         banner: this.config.banner,
         bg_img: this.config.bg_img,
-        customized_banner: this.config.aliyun + 'static/customized-banner.png',//玩具定制banner图
-        customized_after: this.config.aliyun + 'static/customized-after.png',//玩具定制..定制前展示图
-        customized_before: this.config.aliyun + 'static/customized-before.png',//玩具定制..成品图
+        customized_imgs: {
+          banner: this.config.aliyun + 'static/customized-banner.png',//玩具定制banner图
+          img1: this.config.aliyun + 'static/customized-img1.png',//玩具定制..定制展示图
+          img2: this.config.aliyun + 'static/customized-img2.png',
+          img3: this.config.aliyun + 'static/customized-img3.png',
+          img4: this.config.aliyun + 'static/customized-img4.png'
+        },//玩具定制在阿里云上的图片
 
         internal: 0,
         now_page_text: '',
@@ -162,6 +176,7 @@
 
       change_cate(cate_id) {
         this.cate_id = cate_id || 0;
+        this.page = 1;
         this.getProductList();
       },
 
@@ -447,26 +462,55 @@
           align-items: center;
           margin: 0 50px;
 
-          li {
-            background: url("../assets/customized/customized-bg.png") center 100% no-repeat;
-            margin: 0 10px;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
 
-            p {
-              margin: 0 20px 20px;
-              text-align: center;
-              color: #50a8ec;
-              font-size: 18px;
+          li {
+            background: url("../assets/customized/customized-bg.png") no-repeat;
+            background-position: bottom;
+            background-size: 100% 100%;
+            margin: 0 10px;
+            width: calc(9.09% - 40px);
+            padding-bottom: calc(9.09% - 40px);
+            height: 0;
+            border-radius: 50%;
+            position: relative;
+
+            .p-box {
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              z-index: 2;
+              overflow: hidden;
+              display: flex;
+              justify-content: center;
+              border-radius: 50%;
+              align-items: center;
+
+              p {
+                margin: 0 20px 20px;
+                text-align: center;
+                color: #50a8ec;
+                font-size: 18px;
+
+              }
             }
 
             &:nth-child(odd) {
               transform: translateY(80px);
+            }
+
+            &:hover {
+              .p-box {
+                transition: 1s;
+                background-color: rgb(30, 130, 255);
+
+                p {
+                  transition: 1s;
+                  color: #ffffff;
+                  margin: 0 20px;
+                }
+              }
             }
           }
         }
@@ -477,6 +521,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
         position: relative;
 
         .img-center {
@@ -490,30 +535,26 @@
         .two-item {
           width: calc(50% - 20px);
           height: 364px;
-          background-color: #ffffff;
-          border-radius: 10px;
-          border: solid 1px #ededed;
+          /*background-color: #ffffff;*/
+          /*border-radius: 10px;*/
+          /*border: solid 1px #ededed;*/
           display: flex;
-          flex-flow: column;
+          /*flex-flow: column;*/
           justify-content: center;
           align-items: center;
+          margin-bottom: 40px;
 
-          .img {
-            margin-bottom: 23px;
-            height: 250px;
+          /*.img {*/
+            /*!*margin-bottom: 23px;*!*/
+            /*width: 100%;*/
+          /*}*/
 
-            img {
-              height: 100%;
-              width: auto;
-            }
-          }
-
-          p {
-            font-size: 18px;
-            color: #666666;
-            border: solid 1px #bfbfbf;
-            padding: 8px 23px;
-          }
+          /*p {*/
+          /*font-size: 18px;*/
+          /*color: #666666;*/
+          /*border: solid 1px #bfbfbf;*/
+          /*padding: 8px 23px;*/
+          /*}*/
         }
       }
 
@@ -559,4 +600,24 @@
     }
   }
 
+  @media only screen and (max-width: 1700px) {
+    .server-world {
+      .customized {
+        .customized-one {
+          ul {
+            li {
+              width: calc(9.09% - 20px);
+              padding-bottom: calc(9.09% - 20px);
+
+              .p-box {
+                p {
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 </style>

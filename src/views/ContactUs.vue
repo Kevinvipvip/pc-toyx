@@ -194,8 +194,8 @@
         // 百度地图
         // ak: this.secret.baidu_map_ak,
         location: {
-          lng: 117.419747,
-          lat: 39.956569
+          lng: 117.416798,
+          lat: 39.95455
         }
       }
     },
@@ -333,6 +333,7 @@
             // content = content + "<tr><td> 编号：001</td></tr>";
             content = content + "<tr><td style='text-align: center;line-height: 25px'>" + us.name + "</td></tr>";
             content = content + "<tr><td> 地址：" + us.address + "</td></tr>";
+            content = content + "<tr><td style='text-align: center;font-size: 18px;line-height: 30px'><a style='background: #50a7ec;color: #ffffff;padding: 2px 10px' href='http://api.map.baidu.com/marker?location=" + this.location.lat + "," + this.location.lng + "&title=天津同缘兴科技股份有限公司&content=" + us.address + "&output=html&src=webapp.baidu.openAPIdemo' target='_blank'>到这去</a></td></tr>";
             content += "</table>";
             var infowindow = new BMap.InfoWindow(content);
             // 图标点击的时候显示标注

@@ -277,7 +277,7 @@
           overflow: hidden;
 
           .detail-title {
-            width: 70%;
+            width: 80%;
             margin: 0 auto 40px;
 
             h3 {

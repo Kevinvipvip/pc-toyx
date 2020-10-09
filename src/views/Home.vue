@@ -34,23 +34,25 @@
 
       <!--分类-->
       <div class="home-mask m1">
-        <div class="classify">
+        <div class="classify" @mouseenter="hover_swiper(true)" @mouseleave="hover_swiper(false)">
           <swiper v-if="cate_list.length>0" :options="classify" class="swiper-classify" ref="classify">
-            <swiper-slide class="classify-item" v-if="cate_list.length%2 !== 0" :key="'home_cate'+9999999"
-                          style="cursor: auto">
-              <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
-              </div>
-            </swiper-slide>
+            <!--<swiper-slide class="classify-item" v-if="cate_list.length%2 !== 0" :key="'home_cate'+9999999"-->
+            <!--style="cursor: auto">-->
+            <!--<div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">-->
+            <!--</div>-->
+            <!--</swiper-slide>-->
             <swiper-slide class="classify-item" v-for="(item,index) in cate_list" :key="'home_cate'+index"
                           :id="item.id">
+              <div>
 
-              <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
-                <div class="item-img"><img :src="item.icon2"/></div>
+                <div class="item-img-bg" :style="'background-image: url('+ice_cake_small+')'">
+                  <div class="item-img"><img :src="item.icon2"/></div>
+                </div>
+                <h3>{{item.cate_name}}</h3>
               </div>
-              <h3>{{item.cate_name}}</h3>
             </swiper-slide>
           </swiper>
-          <div class="home-cate-box"><img :src="home_cate"/></div>
+          <div class="home-cate-box"><img :src="cate_flag?home_cate[0]:home_cate[1]"/></div>
         </div>
 
       </div>
@@ -135,9 +137,12 @@
         ice_cake_left: this.config.aliyun + 'static/ice-cake-left.png',// 左边大冰块
         ice_cake_right: this.config.aliyun + 'static/ice-cake-right.png',// 右边大冰块
         ice_cake_small: this.config.aliyun + 'static/ice-cake-small.png',// 分类小冰块
-        home_cate: this.config.aliyun + 'static/home-cate.png',// 分类小冰块
 
-        // 插画图片 start
+        // 插画图片 start\
+        cate_interval: 0,
+        hover_flag: true,
+        cate_flag: true,
+        home_cate: [this.config.aliyun + 'static/home-cate.png', this.config.aliyun + 'static/home-cate1.png'],// 分类小冰块
         about_flag: true,
         about_img: [this.config.aliyun + 'static/home-about1.png', this.config.aliyun + 'static/home-about2.png'],
         R_D_flag: true,
@@ -170,17 +175,27 @@
           }
         },
         classify: {
-          // slidesPerView: 7,
-          slidesPerView: 'auto',
+          slidesPerView: 5,
+          // slidesPerView: 'auto',
           initialSlide: 0,
-          // loop: true,
-          // autoplay: {
-          //   delay: 3000,
-          //   stopOnLastSlide: false,
-          //   disableOnInteraction: false,
-          //   reverseDirection: true,
-          // },
+          spaceBetween: 40,
+          loop: true,
+          loopedSlides: 10,
+          autoplay: {
+            delay: 3000,
+            stopOnLastSlide: false,
+            disableOnInteraction: false,
+            reverseDirection: true,
+          },
           on: {
+            slideChangeTransitionEnd() {
+              if (!_self.hover_flag) {
+                _self.change_cate_img();
+              }
+            },
+            touchMove() {
+              window.clearInterval(_self.cate_interval);
+            },
             tap() {
               if (this.clickedSlide) {
                 let cate_id = this.clickedSlide.getAttribute('id');
@@ -205,6 +220,7 @@
         this.service_flag = !this.service_flag;
         this.partner_flag = !this.partner_flag;
       }, 800);
+      this.change_cate_img();
       let promise1 = new Promise(resolve => {
         this.getSlideList(() => {
           resolve();
@@ -227,12 +243,34 @@
       });
 
     },
-    mounted() {
-      this.$nextTick(() => {
-        console.log(this.$refs);
-      });
-    },
+    // mounted() {
+    //   this.$nextTick(() => {
+    //     console.log(this.$refs);
+    //   });
+    // },
     methods: {
+      // 分类轮播图hover停止自动轮播
+      hover_swiper(flag) {
+        this.hover_flag = flag;
+        this.$nextTick(() => {
+          const swiper = this.$refs.classify.swiper;
+          if (flag) {
+            swiper.autoplay.stop();
+            window.clearInterval(this.cate_interval);
+          } else {
+            swiper.autoplay.start();
+            this.change_cate_img();
+          }
+        });
+      },
+
+      change_cate_img() {
+        window.clearInterval(this.cate_interval);
+        this.cate_interval = setInterval(() => {
+          this.cate_flag = !this.cate_flag;
+        }, 750);
+      },
+
       // 点击轮播图进详情
       to_slide_detail(url) {
         if (url) {
@@ -420,36 +458,50 @@
 
         &.m1 {
           background-color: rgba(75, 140, 213, 0.5);
+          overflow: hidden;
 
           .classify {
-            overflow: hidden;
+            width: 1400px;
+            position: relative;
+            margin: 0 auto;
+
+            /*overflow: hidden;*/
             height: 100%;
             display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
+            /*align-items: flex-end;*/
+            /*justify-content: flex-end;*/
 
             .home-cate-box {
+              position: absolute;
+              bottom: 34px;
+              right: -175px;
+
               z-index: 2;
-              margin-right: 59px;
-              position: relative;
-              margin-bottom: 34px;
+              /*margin-right: 59px;*/
+              /*position: relative;*/
+              /*margin-bottom: 34px;*/
               width: 331px;
-              height: 356px;
-              flex-shrink: 0;
+              height: 370px;
+              display: flex;
+              align-items: flex-end;
+              /*flex-shrink: 0;*/
             }
 
             .swiper-classify {
               z-index: 1;
-              flex-grow: 1;
+              /*flex-grow: 1;*/
               position: relative;
-              right: -30px;
+              //right: -30px;
+              margin-left: 0;
+              width: 1280px;
               height: 100%;
 
               /deep/ .swiper-wrapper {
-                justify-content: flex-end;
+                /*transform: translate3d(0, 0, 0) !important;*/
+                /*justify-content: flex-end;*/
 
                 .classify-item {
-                  margin-left: 40px;
+                  /*margin-left: 40px;*/
                   width: 216px;
                   cursor: pointer;
 

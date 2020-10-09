@@ -61,7 +61,7 @@
         }
       },
       change_language(language) {
-        this.language = language;
+        // this.language = language;
         if (language === 'EN') {
           window.open('http://www.tjluckytoy.com/pc/en/index.html', "_blank");
         }
