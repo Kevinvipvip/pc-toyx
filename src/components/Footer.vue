@@ -17,10 +17,8 @@
           <li>关于我们</li>
           <router-link :to="{path:'/about',query:{nav:3,on:1}}" tag="li">公司介绍</router-link>
           <router-link :to="{path:'/about',query:{nav:3,on:2}}" tag="li">发展历程</router-link>
-          <router-link :to="{path:'/about',query:{nav:3,on:3}}" tag="li">企业文化</router-link>
+          <router-link :to="{path:'/about',query:{nav:3,on:3}}" tag="li">企业团队</router-link>
           <router-link :to="{path:'/about',query:{nav:3,on:4}}" tag="li">荣誉资质</router-link>
-          <router-link :to="{path:'/about',query:{nav:3,on:5}}" tag="li">企业团队</router-link>
-          <router-link :to="{path:'/about',query:{nav:3,on:6}}" tag="li">社会责任</router-link>
         </ul>
         <ul>
           <li>服务全球</li>

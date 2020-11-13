@@ -78,9 +78,9 @@
                   <h3>{{item.name}}</h3>
                   <p>手机：{{item.tel}}</p>
                   <p>QQ：{{item.qq}}</p>
-                  <el-tooltip effect="dark" :content="item.email" placement="bottom">
                     <p class="one-line-ellipsis" :title="item.email">邮箱：{{item.email}}</p>
-                  </el-tooltip>
+                  <!--<el-tooltip effect="dark" :content="item.email" placement="bottom">-->
+                  <!--</el-tooltip>-->
                 </div>
               </div>
               <!--<div class="salesman-item">-->

@@ -110,6 +110,8 @@
           <div class="partner">
             <div class="partner-img"><img src="../assets/partner1.png"/></div>
             <div class="partner-img"><img src="../assets/partner2.png"/></div>
+            <div class="partner-img"><img src="../assets/partner4.png"/></div>
+            <div class="partner-img"><img src="../assets/partner3.png"/></div>
           </div>
           <router-link class="btn-more" :to="{path:'/contact',query:{on:1}}">Jion Us</router-link>
         </div>
@@ -602,10 +604,24 @@
           .rank2 {
             .partner {
               display: flex;
+              flex-wrap: wrap;
+              justify-content: space-between;
               margin: 40px 0;
+              width: 50%;
 
               .partner-img {
-                margin-right: 56px;
+                min-width: 250px;
+                margin-top: 20px;
+                height: 85px;
+
+                &:nth-child(-n+2) {
+                  margin-top: 0;
+                }
+
+                img {
+                  height: 100%;
+                  width: auto;
+                }
               }
             }
           }
